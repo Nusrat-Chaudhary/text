@@ -1,0 +1,18 @@
+handleBarCodeScanned  = async ({type, data})=>{
+    const { buttonState} = this.state
+
+    if(buttonState === "BookId"){
+      this.setState({
+        scanned : true,
+        scannedBookId : data,
+        buttonState : 'normal'
+      });
+    }
+    else if(buttonState === "StudentId"){
+      this.setState({
+        scanned : true,
+        scannedStudentId : data,
+        buttonState : 'normal'
+      })
+    }
+  }
