@@ -1,52 +1,44 @@
-class Game {
-  constructor() {}
-
-  getState() {
-    var gameStateRef = database.ref("gameState");
-    gameStateRef.on("value", function(data) {
-      gameState = data.val();
-    });
+class Player {
+  constructor() {
+    this.name = null;
+    this.index = null;
+    this.positionX = 0;
+    this.positionY = 0;
   }
 
-  update(state) {
-    database.ref("/").update({
-      gameState: state
-    });
-  }
+  addPlayer() {
+    var playerIndex = "players/player" + this.index;
 
-  start() {
-    player = new Player();
-    playerCount = player.getCount();
-
-    form = new Form();
-    form.display();
-
-    car1 = createSprite(width / 2 - 50, height - 100);
-    car1.addImage("car1", car1_img);
-    car1.scale = 0.07;
-
-    car2 = createSprite(width / 2 + 100, height - 100);
-    car2.addImage("car2", car2_img);
-    car2.scale = 0.07;
-
-    cars = [car1, car2];
-  }
-
-  handleElements() {
-    form.hide();
-    form.titleImg.position(40, 50);
-    form.titleImg.class("gameTitleAfterEffect");
-  }
-
-  play() {
-    this.handleElements();
-
-    Player.getPlayersInfo();
-
-    if (allPlayers !== undefined) {
-      image(track, 0, -height * 5, width, height * 6);
-
-      drawSprites();
+    if (this.index === 1) {
+      this.positionX = width / 2 - 100;
+    } else {
+      this.positionX = width / 2 + 100;
     }
+
+    database.ref(playerIndex).set({
+      name: this.name,
+      positionX: this.positionX,
+      positionY: this.positionY
+    });
+  }
+
+  getCount() {
+    var playerCountRef = database.ref("playerCount");
+    playerCountRef.on("value", data => {
+      playerCount = data.val();
+    });
+  }
+
+  updateCount(count) {
+    database.ref("/").update({
+      playerCount: count
+    });
+  }
+
+  static getPlayersInfo() {
+    var playerInfoRef = database.ref("players");
+    playerInfoRef.on("value", data => {
+      allPlayers = data.val();
+    });
   }
 }
