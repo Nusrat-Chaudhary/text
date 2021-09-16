@@ -1,12 +1,10 @@
-<View>
-          {this.state.chunks.map(item => {
-            return (
-              <TouchableOpacity
-              style={styles.chunkButton}
-              >
-              <Text style={styles.displayText}>{item}</Text>
-              </TouchableOpacity>
-              );
-          })}
-        </View>
-        
+  chunkButton:{
+    width: '60%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 10,
+    margin: 5,
+    backgroundColor: 'red'
+  }
