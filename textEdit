@@ -1,7 +1,18 @@
-
-    
-  onPress={() => {
-          var buttonColor = this.props.color;
-          this.isButtonPressed(buttonColor);
-          this.playSound();
-        }}>
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 100,
+    marginLeft: 80,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 200,
+    height: 200,
+    backgroundColor: 'red',
+    borderRadius: 100,
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+});
