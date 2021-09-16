@@ -1,7 +1,7 @@
-isButtonPressed(buttonColor) {
+
     
-var query = db.ref('teams/' + buttonColor + '/').update({
-      isButtonPressed: true,
-      timestamp: time,
-    });
-  }
+  onPress={() => {
+          var buttonColor = this.props.color;
+          this.isButtonPressed(buttonColor);
+          this.playSound();
+        }}>
