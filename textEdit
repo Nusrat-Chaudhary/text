@@ -1,59 +1,64 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import AppHeader from '../components/AppHeader';
 
-import db from '../config';
-
-class SoundButton extends React.Component {
-  playSound = async () => {
-    await Audio.Sound.createAsync(
-      {
-        uri: 'http://soundbible.com/mp3/Buzzer-SoundBible.com-188422102.mp3',
-      },
-      { shouldPlay: true }
-    );
+export default class HomeScreen extends React.Component {
+  goToBuzzerScreen = (buzzercolor) => {
+    this.props.navigation.navigate('BuzzerScreen', { color: buzzercolor });
   };
-
-  isButtonPressed(buttonColor) {
-    var time = new Date().getTime();
-
-    var query = db.ref('teams/' + buttonColor + '/').update({
-      isButtonPressed: true,
-      timestamp: time,
-    });
-  }
-
   render() {
     return (
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: this.props.color }]}
-        onPress={() => {
-          var buttonColor = this.props.color;
-          this.isButtonPressed(buttonColor);
-          this.playSound();
-        }}>
-        <Text style={styles.buttonText}>Press Me</Text>
-      </TouchableOpacity>
+      <View>
+        <AppHeader />
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: 'red' }]}
+          onPress={() => {
+            this.goToBuzzerScreen('red');
+          }}>
+          <Text style={styles.buttonText}>Team 1</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: 'green' }]}
+          onPress={() => {
+            this.goToBuzzerScreen('green');
+          }}>
+          <Text style={styles.buttonText}>Team 2</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: 'blue' }]}
+          onPress={() => {
+            this.goToBuzzerScreen('blue');
+          }}>
+          <Text style={styles.buttonText}>Team 3</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: 'yellow' }]}
+          onPress={() => {
+            this.goToBuzzerScreen('yellow');
+          }}>
+          <Text style={styles.buttonText}>Team 4</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
   button: {
-    marginTop: 100,
-    marginLeft: 80,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderRadius: 15,
+    marginTop: 50,
     width: 200,
-    height: 200,
-    backgroundColor: 'red',
-    borderRadius: 100,
+    height: 50,
   },
   buttonText: {
-    fontWeight: 'bold',
-    fontSize: 20,
+    textAlign: 'center',
+    color: 'white',
   },
 });
-
-export default SoundButton;
