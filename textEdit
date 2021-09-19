@@ -1,4 +1,6 @@
- trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
+  groundImage = loadImage("ground2.png")
  
  
-  trex.addAnimation("running", trex_running);
+ 
+ ground = createSprite(200,180,400,20);
+  ground.addImage("ground",groundImage);
