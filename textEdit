@@ -1,11 +1,4 @@
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Text style={{ marginTop: 50, marginLeft: 170 }}>
-          {this.state.counter}
-        </Text>
-          <Button title="Click Me" color="blue" onPress={this.incrementCounter}/>
-      </View>
-    );
-  }
-}
+ trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
+ 
+ 
+  trex.addAnimation("running", trex_running);
