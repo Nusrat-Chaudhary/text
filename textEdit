@@ -1,4 +1,3 @@
-      teams.sort(function (team1, team2) {
-        return team1.timestamp - team2.timestamp;
-      });
-      this.setState({ teamsRank: teams });
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
