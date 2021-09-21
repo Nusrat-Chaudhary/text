@@ -1,9 +1,6 @@
- showTeamRanks = () => {
-    var teams = [];
-    db.ref('teams/').on('value', (data) => {
-      var teamList = data.val();
-     
+ for (var team in teamList) {
+        if (teamList[team]['isButtonPressed'] === true) {
+          teamList[team]['teamName'] = team;
+          teams.push(teamList[team]);
+        }
       }
-      
-    });
-  };
