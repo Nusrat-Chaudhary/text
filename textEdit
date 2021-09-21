@@ -1,6 +1,4 @@
- for (var team in teamList) {
-        if (teamList[team]['isButtonPressed'] === true) {
-          teamList[team]['teamName'] = team;
-          teams.push(teamList[team]);
-        }
-      }
+      teams.sort(function (team1, team2) {
+        return team1.timestamp - team2.timestamp;
+      });
+      this.setState({ teamsRank: teams });
