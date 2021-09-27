@@ -1,6 +1,4 @@
-        console.log(soundChunk);
-    var soundLink =
-      'https://s3-whitehatjrcontent.whjr.online/phones/'+ soundChunk + '.mp3';
-    await Audio.Sound.createAsync(
-      {  uri: soundLink, },
-      { shouldPlay: true }
+   <PhonicSoundButton
+                wordChunk={this.state.chunks[index]}
+                soundChunk={this.state.phonicSounds[index]}
+              />
