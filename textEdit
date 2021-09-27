@@ -1,11 +1,17 @@
-      <TouchableOpacity
-        style={[styles.button,{backgroundColor:this.props.color}]}
-        onPress={this.playSound}>
-        <Text
-          style={styles.buttonText}>
-          Press Me
-        </Text>
-      </TouchableOpacity>
-    );
+const styles = StyleSheet.create({
+  displayText: {
+    textAlign: 'center',
+    fontSize: 30,
+    color: 'white'
+  },
+  chunkButton:{
+    width: '60%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 10,
+    margin: 5,
+    backgroundColor: 'red'
   }
-}
+});
