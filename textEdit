@@ -1,7 +1,6 @@
-      <TouchableOpacity
-        style={styles.chunkButton}
-        onPress={() => {
-          this.playSound(this.props.soundChunk);
-        }}>
-        <Text style={styles.displayText}>{this.props.wordChunk}</Text>
-      </TouchableOpacity>
+        console.log(soundChunk);
+    var soundLink =
+      'https://s3-whitehatjrcontent.whjr.online/phones/'+ soundChunk + '.mp3';
+    await Audio.Sound.createAsync(
+      {  uri: soundLink, },
+      { shouldPlay: true }
