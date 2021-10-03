@@ -1,2 +1,4 @@
-    rectMode(CENTER);
-    rect(ground.position.x,ground.position.y,400,20);
+
+    var ground_options ={
+        isStatic: true
+    }
