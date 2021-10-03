@@ -1,2 +1,2 @@
-  engine = Engine.create();
-    world = engine.world;
+   ground = Bodies.rectangle(200,390,200,20,ground_options);
+    World.add(world,ground);
