@@ -1,4 +1,5 @@
 
-    var ground_options ={
-        isStatic: true
+       var ball_options ={
+        restitution: 1.0
     }
+
