@@ -1,10 +1,11 @@
-        <View>
+     <View>
           {this.state.chunks.map(item => {
-       
-             return
-              
+            return (
+              <TouchableOpacity
+              style={styles.chunkButton}
+              >
               <Text style={styles.displayText}>{item}</Text>
-  
-              
+              </TouchableOpacity>
+              );
           })}
-        </View>
+        </Vie
