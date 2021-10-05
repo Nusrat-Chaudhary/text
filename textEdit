@@ -1,5 +1,10 @@
-  imageIcon: {
-    width: 150,
-    height: 150,
-    marginLeft: 95,
-  },
+        <View>
+          {this.state.chunks.map(item => {
+       
+             return
+              
+              <Text style={styles.displayText}>{item}</Text>
+  
+              
+          })}
+        </View>
