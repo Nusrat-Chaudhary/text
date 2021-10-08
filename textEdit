@@ -1,4 +1,30 @@
- var soundLink =
-      'https://s3-whitehatjrcontent.whjr.online/phones/' +
-      soundChunk +
-      '.mp3';
+render() {
+    return (
+      <TouchableOpacity
+        style={styles.chunkButton}
+        onPress={() => {
+          this.playSound(this.props.soundChunk);
+        }}>
+        <Text style={styles.displayText}>{this.props.wordChunk}</Text>
+      </TouchableOpacity>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  displayText: {
+    textAlign: 'center',
+    fontSize: 30,
+    color: 'white'
+  },
+  chunkButton:{
+    width: '60%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 10,
+    margin: 5,
+    backgroundColor: 'red'
+  }
+});
