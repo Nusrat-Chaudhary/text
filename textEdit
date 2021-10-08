@@ -1,4 +1,4 @@
-    <PhonicSoundButton
-                wordChunk={this.state.chunks[index]}
-                soundChunk={this.state.phonicSounds[index]}
-              />
+ var soundLink =
+      'https://s3-whitehatjrcontent.whjr.online/phones/' +
+      soundChunk +
+      '.mp3';
