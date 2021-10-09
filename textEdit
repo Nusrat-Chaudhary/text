@@ -1,4 +1,3 @@
-this.rank = 0;
-    this.fuel = 185;
-    this.life = 185;
-    this.score = 0;
+ rank: this.rank,
+      score: this.score,
+      life: this.life
