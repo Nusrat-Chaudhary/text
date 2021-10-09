@@ -1,9 +1,19 @@
- if (index === player.index) {
-          stroke(10);
-          fill("red");
-          ellipse(x, y, 60, 60);
+  update() {
+    var playerIndex = "players/player" + this.index;
+    database.ref(playerIndex).update({
+      positionX: this.positionX,
+      positionY: this.positionY,
+      rank: this.rank,
+      score: this.score
+    });
+  }
 
-          // Changing camera position in y direction
-          camera.position.x = cars[index - 1].position.x;
-          camera.position.y = cars[index - 1].position.y;
-        }
+
+  getDistance() {
+    var playerDistanceRef = database.ref("players/player" + this.index);
+    playerDistanceRef.on("value", data => {
+      var data = data.val();
+      this.positionX = data.positionX;
+      this.positionY = data.positionY;
+    });
+  }
