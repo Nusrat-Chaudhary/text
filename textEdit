@@ -1,19 +1,11 @@
-  getDistance() {
-    var playerDistanceRef = database.ref("players/player" + this.index);
-    playerDistanceRef.on("value", data => {
-      var data = data.val();
-      this.positionX = data.positionX;
-      this.positionY = data.positionY;
-    });
-  }
-  
-  
-    update() {
-    var playerIndex = "players/player" + this.index;
-    database.ref(playerIndex).update({
-      positionX: this.positionX,
-      positionY: this.positionY,
-      rank: this.rank,
-      score: this.score
-    });
-  }
+ var index = 0;
+      for (var plr in allPlayers) {
+        //add 1 to the index for every loop
+        index = index + 1;
+
+        //use data form the database to display the cars in x and y direction
+        var x = allPlayers[plr].positionX;
+        var y = height - allPlayers[plr].positionY;
+
+        cars[index - 1].position.x = x;
+        cars[index - 1].position.y = y;
