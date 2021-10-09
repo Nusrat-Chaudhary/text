@@ -1,9 +1,9 @@
+ if (index === player.index) {
+          stroke(10);
+          fill("red");
+          ellipse(x, y, 60, 60);
 
-  handlePlayerControls() {
-    // handling keyboard events
-    if (keyIsDown(UP_ARROW)) {
-      player.positionY += 10;
-      player.update();
-    }
-  }
-}
+          // Changing camera position in y direction
+          camera.position.x = cars[index - 1].position.x;
+          camera.position.y = cars[index - 1].position.y;
+        }
