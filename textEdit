@@ -1,13 +1,18 @@
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
 
-function setup()
-{
-createCanvas(400,400)
-var result =find_num (arr,20);
-if (result== -1)
- {
- console.log("number not found");
-}
-else{
-console.log("number found at index :" , result);
-}
+export default class IssLocationScreen extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                <Text>ISS Location Screen!</Text>
+        
+            </View>
+        )
+    }
 }
