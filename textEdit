@@ -1,6 +1,5 @@
  componentDidMount(){
-    var teamsref  = db.ref("teams");
-    teamsref.on("value", data => {
+   db.ref("teams").on("value", data => {
       var teamDetails = data.val();
       this.setState({
         redStatus: teamDetails.red.enabled,
