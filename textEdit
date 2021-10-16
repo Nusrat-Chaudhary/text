@@ -1,177 +1,103 @@
-class Game {
-  constructor() {
-    this.resetTitle = createElement("h2");
-    this.resetButton = createButton("");
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
 
-    this.leadeboardTitle = createElement("h2");
+@font-face {
+  font-family: vollkorn;
+  src: url(./assets/Vollkorn-Bold.ttf);
+}
 
-    this.leader1 = createElement("h2");
-    this.leader2 = createElement("h2");
-  }
+canvas {
+  display: block;
+}
 
-  getState() {
-    var gameStateRef = database.ref("gameState");
-    gameStateRef.on("value", function(data) {
-      gameState = data.val();
-    });
-  }
-  update(state) {
-    database.ref("/").update({
-      gameState: state
-    });
-  }
+.gameTitle{
+  width: 75%;
+  height: 80px;
+}
 
-  start() {
-    player = new Player();
-    playerCount = player.getCount();
+.gameTitleAfterEffect{
+  width: 25%;
+  height: 80px;
+}
 
-    form = new Form();
-    form.display();
+.greeting{
+  font-size: 40px;
+  color: white;
+  font-family: vollkorn;
+  text-align: center;
+}
 
-    car1 = createSprite(width / 2 - 50, height - 100);
-    car1.addImage("car1", car1_img);
-    car1.scale = 0.07;
+.customInput {
+  width:200px;
+  height:30px;
+  border: 3px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  background-color:transparent;
+  font-size: 20px;
+  outline:none;
+  color:white;
+  font-family: vollkorn;
+  text-align: center;
+}
 
-    car2 = createSprite(width / 2 + 100, height - 100);
-    car2.addImage("car2", car2_img);
-    car2.scale = 0.07;
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 0.5; /* Firefox */
+}
 
-    cars = [car1, car2];
-  }
+.customButton {
+  width:180px;
+  height:50px;
+  background-color: #fea834;
+  border: 3px solid white;
+  color: #FFFF;
+  font-weight:bold;
+  border-radius: 10px;
+  margin-bottom:100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: vollkorn;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  outline: none;
+}
 
-  handleElements() {
-    form.hide();
-    form.titleImg.position(40, 50);
-    form.titleImg.class("gameTitleAfterEffect");
 
-    //C39
-    this.resetTitle.html("Reset Game");
-    this.resetTitle.class("resetText");
-    this.resetTitle.position(width / 2 + 200, 40);
+.resetButton {
+  width:60px;
+  height:60px;
+  background-image: url('./assets/reset.png');
+  background-size: cover;
+  border-radius: 30px;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  outline: none;
+}
 
-    this.resetButton.class("resetButton");
-    this.resetButton.position(width / 2 + 230, 100);
+.resetText{
+  font-size: 25px;
+  color: white;
+  font-family: vollkorn;
+  text-align: center;
+  text-shadow: -1px 1px 0 #ff1744,
+                1px 1px 0 #ff1744,
+                1px -1px 0 #ff1744,
+                -1px -1px 0 #ff1744;
+}
 
-    this.leadeboardTitle.html("Leaderboard");
-    this.leadeboardTitle.class("resetText");
-    this.leadeboardTitle.position(width / 3 - 60, 40);
-
-    this.leader1.class("leadersText");
-    this.leader1.position(width / 3 - 50, 80);
-
-    this.leader2.class("leadersText");
-    this.leader2.position(width / 3 - 50, 130);
-  }
-
-  play() {
-    this.handleElements();
-    this.handleResetButton();
-
-    Player.getPlayersInfo();
-
-    if (allPlayers !== undefined) {
-      image(track, 0, -height * 5, width, height * 6);
-
-      this.showLeaderboard();
-
-      //index of the array
-      var index = 0;
-      for (var plr in allPlayers) {
-        //add 1 to the index for every loop
-        index = index + 1;
-
-        //use data form the database to display the cars in x and y direction
-        var x = allPlayers[plr].positionX;
-        var y = height - allPlayers[plr].positionY;
-
-        cars[index - 1].position.x = x;
-        cars[index - 1].position.y = y;
-
-        if (index === player.index) {
-          stroke(10);
-          fill("red");
-          ellipse(x, y, 60, 60);
-
-          // Changing camera position in y direction
-          camera.position.y = cars[index - 1].position.y;
-        }
-      }
-
-      // handling keyboard events
-      this.handlePlayerControls();
-
-      drawSprites();
-    }
-  }
-
-  handleResetButton() {
-    this.resetButton.mousePressed(() => {
-      database.ref("/").set({
-        playerCount: 0,
-        gameState: 0,
-        players: {}
-      });
-      window.location.reload();
-    });
-  }
-
-  showLeaderboard() {
-    var leader1, leader2;
-    var players = Object.values(allPlayers);
-    if (
-      (players[0].rank === 0 && players[1].rank === 0) ||
-      players[0].rank === 1
-    ) {
-      // &emsp;    This tag is used for displaying four spaces.
-      leader1 =
-        players[0].rank +
-        "&emsp;" +
-        players[0].name +
-        "&emsp;" +
-        players[0].score;
-
-      leader2 =
-        players[1].rank +
-        "&emsp;" +
-        players[1].name +
-        "&emsp;" +
-        players[1].score;
-    }
-
-    if (players[1].rank === 1) {
-      leader1 =
-        players[1].rank +
-        "&emsp;" +
-        players[1].name +
-        "&emsp;" +
-        players[1].score;
-
-      leader2 =
-        players[0].rank +
-        "&emsp;" +
-        players[0].name +
-        "&emsp;" +
-        players[0].score;
-    }
-
-    this.leader1.html(leader1);
-    this.leader2.html(leader2);
-  }
-
-  handlePlayerControls() {
-    if (keyIsDown(UP_ARROW)) {
-      player.positionY += 10;
-      player.update();
-    }
-
-    if (keyIsDown(LEFT_ARROW) && player.positionX > width / 3 - 50) {
-      player.positionX -= 5;
-      player.update();
-    }
-
-    if (keyIsDown(RIGHT_ARROW) && player.positionX < width / 2 + 300) {
-      player.positionX += 5;
-      player.update();
-    }
-  }
+.leadersText{
+  font-size: 20px;
+  color: white;
+  font-family: vollkorn;
+  text-align: center;
 }
