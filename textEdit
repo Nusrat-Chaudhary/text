@@ -1,11 +1,4 @@
- componentDidMount(){
-   db.ref("teams").on("value", data => {
-      var teamDetails = data.val();
-      this.setState({
-        redStatus: teamDetails.red.enabled,
-        blueStatus: teamDetails.blue.enabled,
-        yellowStatus: teamDetails.yellow.enabled,
-        greenStatus: teamDetails.green.enabled
-      });
-    });
-  }
+import { createBottomTabNavigator } from "react-navigation-tabs";
+
+import TransactionScreen from "./screens/BookTransactionScreen";
+import SearchScreen from "./screens/SearchScreen";
