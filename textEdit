@@ -1,59 +1,46 @@
-import * as React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
+var input, heading;
 
-import db from '../config';
+function setup() {
+  
+  createCanvas(300, 200);
+  background(178,255,102);
+  
+  input = createInput();
+  input.position(5, 60);
 
-class SoundButton extends React.Component {
-  playSound = async () => {
-    await Audio.Sound.createAsync(
-      {
-        uri: 'http://soundbible.com/mp3/Buzzer-SoundBible.com-188422102.mp3',
-      },
-      { shouldPlay: true }
-    );
-  };
+  heading = createElement('h4', 'Enter any alphabet:');
+  heading.position(5, 20);
+    
+  textAlign(CENTER);
+  textSize(50);
+}
 
-  isButtonPressed(buttonColor) {
-    var time = new Date().getTime();
+function draw() {
 
-    var query = db.ref('teams/' + buttonColor + '/').update({
-      isButtonPressed: true,
-      timestamp: time,
-    });
-  }
-
-  render() {
-    return (
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: this.props.color }]}
-        onPress={() => {
-          var buttonColor = this.props.color;
-          this.isButtonPressed(buttonColor);
-          this.playSound();
-        }}>
-        <Text style={styles.buttonText}>Press Me</Text>
-      </TouchableOpacity>
-    );
+  var value = input.value();
+  switch (value) {
+      
+    case 'a':
+      console.log("Vowel");
+      break;
+      
+    case 'e':
+      console.log("Vowel");
+      break;
+      
+    case 'i':
+      console.log("Vowel");
+      break;
+      
+    case 'o':
+      console.log("Vowel");  
+      break;
+      
+    case 'u':
+      console.log("Vowel");  
+      break;
+      
+    default:
+      console.log("Please enter any character"); 
   }
 }
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 100,
-    marginLeft: 80,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 200,
-    height: 200,
-    backgroundColor: 'red',
-    borderRadius: 100,
-  },
-  buttonText: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-});
-
-export default SoundButton;
