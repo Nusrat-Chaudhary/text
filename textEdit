@@ -1,3 +1,4 @@
-    incrementCounter = () => {
-    this.setState({ counter: this.state.counter + 1 });
-  };
+ 
+  componentDidMount() {
+    setInterval(this.incrementCounter,1000);
+  }
