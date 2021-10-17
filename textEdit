@@ -1,11 +1,1 @@
-  constructor(props) {
-    super(props);
-    this.state = {
-      pressedButtonIndex: '',
-    };
-  }
-  
-  
-   this.props.buttonIndex === this.state.pressButtonIndex
-            ? [styles.chunkButton, { backgroundColor: 'white' }]
-            : [styles.chunkButton, { backgroundColor: 'red' }]
+    <Button title="Click Me" color="blue" onPress={this.incrementCounter}/>
