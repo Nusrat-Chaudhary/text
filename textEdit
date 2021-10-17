@@ -1,1 +1,6 @@
-    <Button title="Click Me" color="blue" onPress={this.incrementCounter}/>
+  constructor() {
+    super();
+    this.state = {
+      counter: 0,
+    };
+  }
