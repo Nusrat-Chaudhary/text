@@ -1,6 +1,19 @@
- constructor() {
-    super();
-    this.state = {
-      teamsRank: [],
-    };
-  }
+  showTeamRanks = () => {
+    var teams = [];
+    var teamRef = db.ref('teams/');
+    teamRef.on('value', (data) => {
+      var teamList = data.val();
+      for (var team in teamList) {
+        if (teamList[team]['isButtonPressed'] === true) {
+          teamList[team]['teamName'] = team;
+          teams.push(teamList[team]);
+        }
+      }
+      teams.sort(function (team1, team2) {
+        return team1.timestamp - team2.timestamp;
+      });
+      this.setState({ teamsRank: teams });
+      teams = [];
+    });
+  };
+
