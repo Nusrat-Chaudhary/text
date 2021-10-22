@@ -1,19 +1,21 @@
-  showTeamRanks = () => {
-    var teams = [];
-    var teamRef = db.ref('teams/');
-    teamRef.on('value', (data) => {
-      var teamList = data.val();
-      for (var team in teamList) {
-        if (teamList[team]['isButtonPressed'] === true) {
-          teamList[team]['teamName'] = team;
-          teams.push(teamList[team]);
-        }
-      }
-      teams.sort(function (team1, team2) {
-        return team1.timestamp - team2.timestamp;
-      });
-      this.setState({ teamsRank: teams });
-      teams = [];
+   resetDb = () => {
+    var restDatabase = db.ref('teams/').set({
+      red: {
+        isButtonPressed: false,
+        timestamp: 0,
+      },
+      green: {
+        isButtonPressed: false,
+        timestamp: 0,
+      },
+      blue: {
+        isButtonPressed: false,
+        timestamp: 0,
+      },
+      yellow: {
+        isButtonPressed: false,
+        timestamp: 0,
+      },
     });
+    this.setState({ teamsRank: [] });
   };
-
