@@ -1,21 +1,18 @@
- addSprites(spriteGroup, numberOfSprites, spriteImage, scale, positions = []) {
-    for (var i = 0; i < numberOfSprites; i++) {
-      var x, y;
-
-      //C41 //SA
-      if (positions.length > 0) {
-        x = positions[i].x;
-        y = positions[i].y;
-        spriteImage = positions[i].image;
-      } else {
-        x = random(width / 2 + 150, width / 2 - 150);
-        y = random(-height * 4.5, height - 400);
-      }
-      var sprite = createSprite(x, y);
-      sprite.addImage("sprite", spriteImage);
-
-      sprite.scale = scale;
-      spriteGroup.add(sprite);
-    }
+ handleFuel(index) {
+    // Adding fuel
+    cars[index - 1].overlap(fuels, function(collector, collected) {
+      player.fuel = 185;
+      //collected is the sprite in the group collectibles that triggered
+      //the event
+      collected.remove();
+    });
   }
 
+  handlePowerCoins(index) {
+    cars[index - 1].overlap(powerCoins, function(collector, collected) {
+      player.score += 21;
+      player.update();
+      //collected is the sprite in the group collectibles that triggered
+      //the event
+      collected.remove();
+    });
