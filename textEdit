@@ -1,32 +1,25 @@
-    render() {
-      const hasCameraPermissions = this.state.hasCameraPermissions;
-      const scanned = this.state.scanned;
-      const buttonState = this.state.buttonState;
-
-      if (buttonState === "clicked" && hasCameraPermissions){
+{
+  defaultNavigationOptions: ({navigation})=>({
+    tabBarIcon: ()=>{
+      const routeName = navigation.state.routeName;
+      console.log(routeName)
+      if(routeName === "Transaction"){
         return(
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-            style={StyleSheet.absoluteFillObject}
-          />
-        );
+          <Image
+          source={require("./assets/book.png")}
+          style={{width:40, height:40}}
+        />
+        )
+        
       }
-
-      else if (buttonState === "normal"){
+      else if(routeName === "Search"){
         return(
-          <View style={styles.container}>
-
-          <Text style={styles.displayText}>{
-            hasCameraPermissions===true ? this.state.scannedData: "Request Camera Permission"
-          }</Text>     
-
-          <TouchableOpacity
-            onPress={this.getCameraPermissions}
-            style={styles.scanButton}>
-            <Text style={styles.buttonText}>Scan QR Code</Text>
-          </TouchableOpacity>
-        </View>
-        );
+          <Image
+          source={require("./assets/searchingbook.png")}
+          style={{width:40, height:40}}
+        />)
+        
       }
     }
-  }
+  })
+}
