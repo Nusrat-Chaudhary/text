@@ -1,6 +1,31 @@
-        <View style={styles.infoContainer}>
-                            <Text style={styles.infoText}>Latitude: {this.state.location.latitude}</Text>
-                            <Text style={styles.infoText}>Longitude: {this.state.location.longitude}</Text>
-                            <Text style={styles.infoText}>Altitude (KM): {this.state.location.altitude}</Text>
-                            <Text style={styles.infoText}>Velocity (KM/H): {this.state.location.velocity}</Text>
-                        </View>
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#b8b8b8',
+  },
+  inputBox: {
+    marginTop: 200,
+    width: '80%',
+    alignSelf: 'center',
+    height: 40,
+    textAlign: 'center',
+    borderWidth: 4,
+    outline: 'none',
+  },
+  goButton: {
+    width: '50%',
+    height: 55,
+    alignSelf: 'center',
+    padding: 10,
+    margin: 10,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  displayText: {
+    textAlign: 'center',
+    fontSize: 30,
+  },
+});
