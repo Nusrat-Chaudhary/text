@@ -1,8 +1,9 @@
-import * as firebase from 'firebase'
-require('@firebase/firestore')
-
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  export default firebase.firestore();
+constructor(){
+  super();
+  this.state = {
+    redStatus : true,
+    greenStatus: true,
+    blueStatus: true,
+    yellowStatus: true
+  }
+}
