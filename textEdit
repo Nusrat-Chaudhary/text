@@ -5,9 +5,9 @@ class CannonBall {
       isStatic: true
     };
     this.r = r;
-    this.body = Bodies.circle(x, y, this.r, options);
+    this.tanishq = Bodies.circle(x, y, this.r, options);
     this.image = loadImage("./assets/cannonball.png");
-    World.add(world, this.body);
+    World.add(world, this.tanishq);
   }
   
     display() 
