@@ -1,10 +1,5 @@
- 
-  shoot() {
-    var newAngle = cannon.angle - 28;
-    newAngle = newAngle *(3.14/180)
-    var velocity = p5.Vector.fromAngle(newAngle);
-    velocity.mult(0.5);
-    Matter.Body.setStatic(this.tanishq, false);
-    Matter.Body.setVelocity(this.tanishq, {
-      x: velocity.x *(180/3.14), y: velocity.y * (180/3.14)});
+function keyReleased() {
+  if (keyCode === DOWN_ARROW) {
+    cannonBall.shoot();
   }
+}
