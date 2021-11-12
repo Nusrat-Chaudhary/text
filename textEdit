@@ -1,5 +1,15 @@
-function keyReleased() {
-  if (keyCode === DOWN_ARROW) {
-    cannonBall.shoot();
-  }
-}
+node --version
+npm --version
+expo build:android
+npm install --global expo-cli
+npm install react-native-reanimated
+npm install react-native-gesture-handler
+npm install react-native-elements
+(npm install react-native-elements@1.2.7/2.2.1 (--force))
+npm install react-native-navigation
+npm install react-navigation
+npm install react-navigation-tabs
+npm install react-navigation-tabs --force
+npm install react-native-screens
+npm install firebase
+(npm install firebase@7.9.0 --save --force)
