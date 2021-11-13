@@ -1,4 +1,9 @@
-  static updateCarsAtEnd(rank) {
-    database.ref("/").update({
-      CarsAtEnd: rank
-    });
+     const finshLine = height * 6 - 100;
+
+      if (player.positionY > finshLine) {
+        gameState = 2;
+        player.rank += 1;
+        Player.updateCarsAtEnd(player.rank);
+        player.update();
+        this.showRank();
+      }
