@@ -1,21 +1,18 @@
-showLife() {
-    push();
-    image(lifeImage, width / 2 - 130, height - player.positionY - 400, 20, 20);
-    fill("white");
-    rect(width / 2 - 100, height - player.positionY - 400, 185, 20);
-    fill("#f50057");
-    rect(width / 2 - 100, height - player.positionY - 400, player.life, 20);
-    noStroke();
-    pop();
-  }
+function setup() {
+  createCanvas(400, 400);
+}
 
-  showFuelBar() {
-    push();
-    image(fuelImage, width / 2 - 130, height - player.positionY - 350, 20, 20);
-    fill("white");
-    rect(width / 2 - 100, height - player.positionY - 350, 185, 20);
-    fill("#ffc400");
-    rect(width / 2 - 100, height - player.positionY - 350, player.fuel, 20);
-    noStroke();
-    pop();
+function draw() {
+  background(220);
+}
+
+function count()
+{
+  let numbers = [1,2,3,4,5,6,7,8,9];
+  let len = numbers.length;
+
+  for(let i = 0; i<len; i++)
+  {
+    console.log(numbers[i]);
   }
+}
