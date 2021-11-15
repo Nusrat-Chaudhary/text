@@ -1,12 +1,7 @@
-  getCameraPermissions = async domState => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-
+  handleBarCodeScanned = async ({ type, data }) => {
     this.setState({
-      /*status === "granted" is true when user has granted permission
-          status === "granted" is false when user has not granted the permission
-        */
-      hasCameraPermissions: status === "granted",
-      domState: domState,
-      scanned: false
+      scannedData: data,
+      domState: "normal",
+      scanned: true
     });
   };
