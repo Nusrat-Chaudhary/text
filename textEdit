@@ -1,14 +1,12 @@
-const Tab = createBottomTabNavigator();
+  getCameraPermissions = async domState => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
 
-export default class BottomTabNavigator extends Component {
-  render() {
-    return (
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Transaction" component={TransactionScreen} />
-          <Tab.Screen name="Search" component={SearchScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    );
-  }
-}
+    this.setState({
+      /*status === "granted" is true when user has granted permission
+          status === "granted" is false when user has not granted the permission
+        */
+      hasCameraPermissions: status === "granted",
+      domState: domState,
+      scanned: false
+    });
+  };
