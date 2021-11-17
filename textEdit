@@ -1,8 +1,9 @@
-    constructor(props){
-      super(props)
-      this.state = {
-        allTransactions: [],
-        lastVisibleTransaction: null,
-        search:''
-      }
+ componentDidMount = async ()=>{
+      const query = await db.collection("transactions").limit(10).get()
+      query.docs.map((doc)=>{
+        this.setState({
+          allTransactions: [],
+          lastVisibleTransaction: doc
+        })
+      })
     }
