@@ -1,29 +1,22 @@
 
-  handleTransaction = async () => {
-    //verify if the student is eligible for book issue or return or none
-    //student id exists in the database
-    //issue : number of book issued < 2
-    //issue: verify book availability
-    //return: last transaction -> book issued by the student id
-    var transactionType = await this.checkBookEligibility();
-
-    if (!transactionType) {
-      Alert.alert("The book doesn't exist in the library database!");
-      this.setState({
-        scannedStudentId: "",
-        scannedBookId: ""
-      });
-    } else if (transactionType === "Issue") {
-      var isStudentEligible = await this.checkStudentEligibilityForBookIssue();
-      if (isStudentEligible) {
-        this.initiateBookIssue();
-        Alert.alert("Book issued to the student!");
-      }
+  checkBookEligibility = async () => {
+    const bookRef = await db
+      .collection("books")
+      .where("bookId", "==", this.state.scannedBookId)
+      .get();
+    var transactionType = "";
+    if (bookRef.docs.length == 0) {
+      transactionType = false;
     } else {
-      var isStudentEligible = await this.checkStudentEligibilityForReturn();
-      if (isStudentEligible) {
-        this.initiateBookReturn();
-        Alert.alert("Book returned to the library!");
-      }
+      bookRef.docs.map(doc => {
+        var book = doc.data();
+        if (book.bookAvailability) {
+          transactionType = "Issue";
+        } else {
+          transactionType = "Return";
+        }
+      });
     }
+
+    return transactionType;
   };
