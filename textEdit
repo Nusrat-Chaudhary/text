@@ -1,23 +1,75 @@
-
-  checkStudentEligibilityForReturn = async () => {
-    const transactionRef = await db
-      .collection("transactions")
-      .where("bookId", "==", this.state.scannedBookId)
-      .limit(1)
-      .get();
-    var isStudentEligible = "";
-    transactionRef.docs.map(doc => {
-      var lastBookTransaction = doc.data();
-      if (lastBookTransaction.studentId === this.state.scannedStudentId) {
-        isStudentEligible = true;
-      } else {
-        isStudentEligible = false;
-        Alert.alert("The book wasn't issued by this student!");
-        this.setState({
-          scannedStudentId: "",
-          scannedBookId: ""
-        });
-      }
+  initiateBookIssue = async () => {
+    //add a transaction
+    db.collection("transactions").add({
+      studentId: this.state.scannedStudentId,
+      bookId: this.state.scannedBookId,
+      date: firebase.firestore.Timestamp.now().toDate(),
+      transactionType: "Issue"
     });
-    return isStudentEligible;
+    //change book status
+    db.collection("books")
+      .doc(this.state.scannedBookId)
+      .update({
+        bookAvailability: false
+      });
+    //change number  of issued books for student
+    db.collection("students")
+      .doc(this.state.scannedStudentId)
+      .update({
+        numberOfBooksIssued: firebase.firestore.FieldValue.increment(1)
+      });
+
+    this.setState({
+      scannedStudentId: "",
+      scannedBookId: ""
+    });
+  };
+
+  initiateBookReturn = async () => {
+    //add a transaction
+    db.collection("transactions").add({
+      studentId: this.state.scannedStudentId,
+      bookId: this.state.scannedBookId,
+      date: firebase.firestore.Timestamp.now().toDate(),
+      transactionType: "Return"
+    });
+    //change book status
+    db.collection("books")
+      .doc(this.state.scannedBookId)
+      .update({
+        bookAvailability: true
+      });
+    //change number  of issued books for student
+    db.collection("students")
+      .doc(this.state.scannedStudentId)
+      .update({
+        numberOfBooksIssued: firebase.firestore.FieldValue.increment(-1)
+      });
+
+    this.setState({
+      scannedStudentId: "",
+      scannedBookId: ""
+    });
+  };
+
+  checkBookEligibility = async () => {
+    const bookRef = await db
+      .collection("books")
+      .where("bookId", "==", this.state.scannedBookId)
+      .get();
+    var transactionType = "";
+    if (bookRef.docs.length == 0) {
+      transactionType = false;
+    } else {
+      bookRef.docs.map(doc => {
+        var book = doc.data();
+        if (book.bookAvailability) {
+          transactionType = "Issue";
+        } else {
+          transactionType = "Return";
+        }
+      });
+    }
+
+    return transactionType;
   };
