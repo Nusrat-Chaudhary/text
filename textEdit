@@ -1,1 +1,16 @@
- <link rel="stylesheet" href="style.css" />
+  handleObstacleCollision(index) {
+    if (cars[index - 1].collide(obstacles)) {
+      if (this.leftKeyActive) {
+        player.positionX += 100;
+      } else {
+        player.positionX -= 100;
+      }
+
+      //Reducing Player Life
+      if (player.life > 0) {
+        player.life -= 185 / 4;
+      }
+
+      player.update();
+    }
+  }
