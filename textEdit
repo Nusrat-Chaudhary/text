@@ -1,13 +1,4 @@
 
-    if (domState === "bookId") {
-      this.setState({
-        bookId: data,
-        domState: "normal",
-        scanned: true
-      });
-    } else if (domState === "studentId") {
-      this.setState({
-        studentId: data,
-        domState: "normal",
-        scanned: true
-      }
+const bgImage = require("../assets/background2.png");
+const appIcon = require("../assets/appIcon.png");
+const appName = require("../assets/appName.png");
