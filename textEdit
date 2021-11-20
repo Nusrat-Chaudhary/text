@@ -1,16 +1,6 @@
-  handleObstacleCollision(index) {
-    if (cars[index - 1].collide(obstacles)) {
-      if (this.leftKeyActive) {
-        player.positionX += 100;
-      } else {
-        player.positionX -= 100;
-      }
+ var currentlife = allPlayers[plr].life;
 
-      //Reducing Player Life
-      if (player.life > 0) {
-        player.life -= 185 / 4;
-      }
-
-      player.update();
-    }
-  }
+        if (currentlife <= 0) {
+          cars[index - 1].changeImage("blast");
+          cars[index - 1].scale = 0.3;
+        }
