@@ -1,39 +1,13 @@
- <View style={styles.container}>
-       
-          <View style={styles.lowerContainer}>
-          
-          
-            <View style={styles.textinputContainer}>
-              <TextInput
-                style={styles.textinput}
-                placeholder={"Book Id"}
-                placeholderTextColor={"#FFFFFF"}
-                value={bookId}
-              />
-              <TouchableOpacity
-                style={styles.scanbutton}
-                onPress={() => this.getCameraPermissions("bookId")}
-              >
-                <Text style={styles.scanbuttonText}>Scan</Text>
-              </TouchableOpacity>
-            </View>
-            
-            
-            <View style={[styles.textinputContainer, { marginTop: 25 }]}>
-              <TextInput
-                style={styles.textinput}
-                placeholder={"Student Id"}
-                placeholderTextColor={"#FFFFFF"}
-                value={studentId}
-              />
-              <TouchableOpacity
-                style={styles.scanbutton}
-                onPress={() => this.getCameraPermissions("studentId")}
-              >
-                <Text style={styles.scanbuttonText}>Scan</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        
-        
-      </View>
+
+    if (domState === "bookId") {
+      this.setState({
+        bookId: data,
+        domState: "normal",
+        scanned: true
+      });
+    } else if (domState === "studentId") {
+      this.setState({
+        studentId: data,
+        domState: "normal",
+        scanned: true
+      }
