@@ -1,15 +1,8 @@
-  <ListItem
-        key={i}
-        title={item.book_name}
-        subtitle={item.reason_to_request}
-        titleStyle={{ color: 'black', fontWeight: 'bold' }}
-        rightElement={
-            <TouchableOpacity style={styles.button}
-              onPress ={()=>{
-                this.props.navigation.navigate("RecieverDetails",{"details": item})
-              }}
-              >
-              <Text style={{color:'#ffff'}}>View</Text>
-            </TouchableOpacity>
-          }
-        bottomDivider
+import React ,{Component} from 'react'
+import {View, Text,TouchableOpacity,ScrollView,FlatList,StyleSheet} from 'react-native';
+import {Card,Icon,ListItem} from 'react-native-elements'
+import MyHeader from '../components/MyHeader.js'
+import firebase from 'firebase';
+import db from '../config.js'
+
+export default class MyDonationScreen extends Component {
