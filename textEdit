@@ -1,5 +1,4 @@
-function showCannonBalls(ball) {
-  if (ball) {
-    ball.display();
+  for (var i = 0; i < balls.length; i++) {
+    showCannonBalls(balls[i]);
   }
-}
+
