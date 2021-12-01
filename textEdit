@@ -1,8 +1,4 @@
-import React ,{Component} from 'react'
-import {View, Text,TouchableOpacity,ScrollView,FlatList,StyleSheet} from 'react-native';
-import {Card,Icon,ListItem} from 'react-native-elements'
-import MyHeader from '../components/MyHeader.js'
-import firebase from 'firebase';
-import db from '../config.js'
-
-export default class MyDonationScreen extends Component {
+  var cannonBall = new CannonBall(cannon.x, cannon.y);
+    cannonBall.trajectory = [];
+    Matter.Body.setAngle(cannonBall.body, cannon.angle);
+    balls.push(cannonBall);
