@@ -1,5 +1,5 @@
-function keyReleased() {
-  if (keyCode === DOWN_ARROW) {
-    balls[balls.length - 1].shoot();
+function showCannonBalls(ball) {
+  if (ball) {
+    ball.display();
   }
 }
