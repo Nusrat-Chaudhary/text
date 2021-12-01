@@ -1,4 +1,10 @@
-  var cannonBall = new CannonBall(cannon.x, cannon.y);
-    cannonBall.trajectory = [];
-    Matter.Body.setAngle(cannonBall.body, cannon.angle);
-    balls.push(cannonBall);
+
+    // Additional Activity
+    if (this.body.velocity.x > 0 && pos.x > 10) {
+      var position = [pos.x, pos.y];
+      this.trajectory.push(position);
+    }
+
+    for (var i = 0; i < this.trajectory.length; i++) {
+      image(this.image, this.trajectory[i][0], this.trajectory[i][1], 5, 5);
+    }
