@@ -1,2 +1,2 @@
- contraintLog = new Log(230,180,80, PI/2);
-  chain = new Chain(bird.body, contraintLog.body);
+
+        line(this.chain.bodyA.position.x,this.chain.bodyA.position.y, this.chain.bodyB.position.x, this.chain.bodyB.position.y);
