@@ -1,2 +1,15 @@
 
-        line(this.chain.bodyA.position.x,this.chain.bodyA.position.y, this.chain.bodyB.position.x, this.chain.bodyB.position.y);
+  handleTransaction = () => {
+    var { bookId } = this.state;
+    db.collection("books")
+      .doc(bookId)
+      .get()
+      .then(doc => {
+        var book = doc.data();
+        if (book.is_book_available) {
+          this.initiateBookIssue();
+        } else {
+          this.initiateBookReturn();
+        }
+      });
+  };
