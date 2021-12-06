@@ -1,15 +1,7 @@
+  initiateBookIssue = () => {
+    console.log("Book issued to the student!");
+  };
 
-  handleTransaction = () => {
-    var { bookId } = this.state;
-    db.collection("books")
-      .doc(bookId)
-      .get()
-      .then(doc => {
-        var book = doc.data();
-        if (book.is_book_available) {
-          this.initiateBookIssue();
-        } else {
-          this.initiateBookReturn();
-        }
-      });
+  initiateBookReturn = () => {
+    console.log("Book returned to the library!");
   };
