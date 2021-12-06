@@ -1,7 +1,13 @@
-  initiateBookIssue = () => {
-    console.log("Book issued to the student!");
-  };
-
-  initiateBookReturn = () => {
-    console.log("Book returned to the library!");
-  };
+  button: {
+    width: "43%",
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F48D20",
+    borderRadius: 15
+  },
+  buttonText: {
+    fontSize: 24,
+    color: "#FFFFFF",
+    fontFamily: "Rajdhani_600SemiBold"
+  }
