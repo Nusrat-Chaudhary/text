@@ -1,6 +1,7 @@
-const switchNavigator = createSwitchNavigator({
-LoginScreen:{screen: LoginScreen},
-TabNavigator:{screen: TabNavigator}
-})
+import React from 'react';
+import {View,Text,StyleSheet,Image,TextInput,TouchableOpacity,Alert,KeyboardAvoidingView} from 'react-native';
+import * as firebase from 'firebase'
+export default class LoginScreen extends React.Component {
 
-const AppContainer =  createAppContainer(switchNavigator);
+}
+
