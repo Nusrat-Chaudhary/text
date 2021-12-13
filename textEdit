@@ -1,29 +1,50 @@
- initiateBookReturn = async (bookId, studentId, bookName, studentName) => {
-    //add a transaction
-    db.collection("transactions").add({
-      student_id: studentId,
-      student_name: studentName,
-      book_id: bookId,
-      book_name: bookName,
-      date: firebase.firestore.Timestamp.now().toDate(),
-      transaction_type: "return"
-    });
-    //change book status
+  handleBarCodeScanned = async ({ type, data }) => {
+    const { domState } = this.state;
+
+    if (domState === "bookId") {
+      this.setState({
+        bookId: data,
+        domState: "normal",
+        scanned: true
+      });
+    } else if (domState === "studentId") {
+      this.setState({
+        studentId: data,
+        domState: "normal",
+        scanned: true
+      });
+    }
+  };
+
+  handleTransaction = async () => {
+    var { bookId, studentId } = this.state;
+    await this.getBookDetails(bookId);
+    await this.getStudentDetails(studentId);
+
     db.collection("books")
       .doc(bookId)
-      .update({
-        is_book_available: true
-      });
-    //change number  of issued books for student
-    db.collection("students")
-      .doc(studentId)
-      .update({
-        number_of_books_issued: firebase.firestore.FieldValue.increment(-1)
-      });
+      .get()
+      .then(doc => {
+        var book = doc.data();
+        if (book.is_book_available) {
+          var { bookName, studentName } = this.state;
+          this.initiateBookIssue(bookId, studentId, bookName, studentName);
 
-    // Updating local state
-    this.setState({
-      bookId: "",
-      studentId: ""
-    });
+          // For Android users only
+          ToastAndroid.show("Book issued to the student!", ToastAndroid.SHORT);
+
+          // Alert.alert("Book issued to the student!");
+        } else {
+          var { bookName, studentName } = this.state;
+          this.initiateBookReturn(bookId, studentId, bookName, studentName);
+
+          // For Android users only
+          ToastAndroid.show(
+            "Book returned to the library!",
+            ToastAndroid.SHORT
+          );
+
+          // Alert.alert("Book returned to the library!");
+        }
+      });
   };
