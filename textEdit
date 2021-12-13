@@ -14,7 +14,7 @@
           this.initiateBookIssue(bookId, studentId, bookName, studentName);
 
           // For Android users only
-          ToastAndroid.show("Book issued to the student!", ToastAndroid.SHORT);
+         // ToastAndroid.show("Book issued to the student!", ToastAndroid.SHORT);
 
           // Alert.alert("Book issued to the student!");
         } else {
@@ -22,10 +22,7 @@
           this.initiateBookReturn(bookId, studentId, bookName, studentName);
 
           // For Android users only
-          ToastAndroid.show(
-            "Book returned to the library!",
-            ToastAndroid.SHORT
-          );
+          //ToastAndroid.show("Book returned to the library!",ToastAndroid.SHORT);
 
           // Alert.alert("Book returned to the library!");
         }
