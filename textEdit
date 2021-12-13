@@ -1,20 +1,3 @@
-  handleBarCodeScanned = async ({ type, data }) => {
-    const { domState } = this.state;
-
-    if (domState === "bookId") {
-      this.setState({
-        bookId: data,
-        domState: "normal",
-        scanned: true
-      });
-    } else if (domState === "studentId") {
-      this.setState({
-        studentId: data,
-        domState: "normal",
-        scanned: true
-      });
-    }
-  };
 
   handleTransaction = async () => {
     var { bookId, studentId } = this.state;
