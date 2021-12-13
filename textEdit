@@ -1,14 +1,30 @@
-
-  getStudentDetails = studentId => {
-    studentId = studentId.trim();
-    db.collection("students")
-      .where("student_id", "==", studentId)
-      .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          this.setState({
-            studentName: doc.data().student_details.student_name
-          });
-        });
+ initiateBookIssue = async (bookId, studentId, bookName, studentName) => {
+    //add a transaction
+    db.collection("transactions").add({
+      student_id: studentId,
+      student_name: studentName,
+      book_id: bookId,
+      book_name: bookName,
+      date: firebase.firestore.Timestamp.now().toDate(),
+      transaction_type: "issue"
+    });
+    //change book status
+    db.collection("books")
+      .doc(bookId)
+      .update({
+        is_book_available: false
       });
+    //change number  of issued books for student
+    db.collection("students")
+      .doc(studentId)
+      .update({
+        number_of_books_issued: firebase.firestore.FieldValue.increment(1)
+      });
+
+    // Updating local state
+    this.setState({
+      bookId: "",
+      studentId: ""
+    });
   };
+
