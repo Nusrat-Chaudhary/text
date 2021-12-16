@@ -1,39 +1,14 @@
-  handleTransaction = async () => {
-    var { bookId, studentId } = this.state;
-    await this.getBookDetails(bookId);
-    await this.getStudentDetails(studentId);
+import React, { Component } from "react";
+import {
+  Animated,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
+} from "react-native";
+import { ListItem, Icon } from "react-native-elements";
 
-    var transactionType = await this.checkBookAvailability(bookId);
+import { SwipeListView } from "react-native-swipe-list-view";
 
-    if (!transactionType) {
-      this.setState({ bookId: "", studentId: "" });
-      // For Android users only
-      // ToastAndroid.show("The book doesn't exist in the library database!", ToastAndroid.SHORT);
-      Alert.alert("The book doesn't exist in the library database!");
-    } else if (transactionType === "issue") {
-      var isEligible = await this.checkStudentEligibilityForBookIssue(
-        studentId
-      );
-
-      if (isEligible) {
-        var { bookName, studentName } = this.state;
-        this.initiateBookIssue(bookId, studentId, bookName, studentName);
-      }
-      // For Android users only
-      // ToastAndroid.show("Book issued to the student!", ToastAndroid.SHORT);
-      Alert.alert("Book issued to the student!");
-    } else {
-      var isEligible = await this.checkStudentEligibilityForBookReturn(
-        bookId,
-        studentId
-      );
-
-      if (isEligible) {
-        var { bookName, studentName } = this.state;
-        this.initiateBookReturn(bookId, studentId, bookName, studentName);
-      }
-      // For Android users only
-      // ToastAndroid.show("Book returned to the library!", ToastAndroid.SHORT);
-      Alert.alert("Book returned to the library!");
-    }
-  };
+import db from "../config";
