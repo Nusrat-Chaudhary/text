@@ -1,10 +1,8 @@
-  onSwipeValueChange = swipeData => {
-    var allNotifications = this.state.allNotifications;
-    const { key, value } = swipeData;
-    if (value < -Dimensions.get("window").width) {
-      const newData = [...allNotifications];
-      this.updateMarkAsread(allNotifications[key]);
-      newData.splice(key, 1);
-      this.setState({ allNotifications: newData });
-    }
+  updateMarkAsread = notification => {
+    db.collection("all_notifications")
+      .doc(notification.doc_id)
+      .update({
+        notification_status: "read"
+      });
   };
+
