@@ -1,20 +1,33 @@
 
-  checkBookAvailability = async bookId => {
-    const bookRef = await db
-      .collection("books")
-      .where("book_id", "==", bookId)
+ checkStudentEligibilityForBookIssue = async studentId => {
+    const studentRef = await db
+      .collection("students")
+      .where("student_id", "==", studentId)
       .get();
 
-    var transactionType = "";
-    if (bookRef.docs.length == 0) {
-      transactionType = false;
+    var isStudentEligible = "";
+    if (studentRef.docs.length == 0) {
+      this.setState({
+        bookId: "",
+        studentId: ""
+      });
+      isStudentEligible = false;
+      Alert.alert("The student id doesn't exist in the database!");
     } else {
-      bookRef.docs.map(doc => {
-        //if the book is available then transaction type will be issue
-        // otherwise it will be return
-        transactionType = doc.data().is_book_available ? "issue" : "return";
+      studentRef.docs.map(doc => {
+        if (doc.data().number_of_books_issued < 2) {
+          isStudentEligible = true;
+        } else {
+          isStudentEligible = false;
+          Alert.alert("The student has already issued 2 books!");
+          this.setState({
+            bookId: "",
+            studentId: ""
+          });
+        }
       });
     }
 
-    return transactionType;
+    return isStudentEligible;
   };
+
