@@ -1,8 +1,10 @@
-export default class SwipeableFlatlist extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      allNotifications: this.props.allNotifications
-    };
-  }
-
+  onSwipeValueChange = swipeData => {
+    var allNotifications = this.state.allNotifications;
+    const { key, value } = swipeData;
+    if (value < -Dimensions.get("window").width) {
+      const newData = [...allNotifications];
+      this.updateMarkAsread(allNotifications[key]);
+      newData.splice(key, 1);
+      this.setState({ allNotifications: newData });
+    }
+  };
