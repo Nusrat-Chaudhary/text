@@ -1,11 +1,7 @@
-  renderItem = data => (
-    <Animated.View>
-      <ListItem
-        leftElement={<Icon name="book" type="font-awesome" color="#696969" />}
-        title={data.item.book_name}
-        titleStyle={{ color: "black", fontWeight: "bold" }}
-        subtitle={data.item.message}
-        bottomDivider
-      />
-    </Animated.View>
+  renderHiddenItem = () => (
+    <View style={styles.rowBack}>
+      <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
+        <Text style={styles.backTextWhite}>Mark as read</Text>
+      </View>
+    </View>
   );
