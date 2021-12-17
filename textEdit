@@ -1,8 +1,24 @@
 import React, { Component } from "react";
-import BottomTabNavigator from "./components/BottomTabNavigator";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-export default class App extends Component {
+import TransactionScreen from "../screens/Transaction";
+import SearchScreen from "../screens/Search";
+
+const Tab = createBottomTabNavigator();
+
+export default class BottomTabNavigator extends Component {
   render() {
-    return <BottomTabNavigator />;
+    return (
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Transaction" component={TransactionScreen} />
+          <Tab.Screen name="Search" component={SearchScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    );
   }
 }
+© 2021 GitHub, Inc.
+Terms
+Pr
