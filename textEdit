@@ -1,14 +1,37 @@
 
-  getTransactions = () => {
-    db.collection("transactions")
-      .limit(10)
-      .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          this.setState({
-            allTransactions: [...this.state.allTransactions, doc.data()],
-            lastVisibleTransaction: doc
+handleSearch = async text => {
+    var enteredText = text.toUpperCase().split("");
+    text = text.toUpperCase();
+    this.setState({
+      allTransactions: []
+    });
+    if (!text) {
+      this.getTransactions();
+    }
+
+    if (enteredText[0] === "B") {
+      db.collection("transactions")
+        .where("book_id", "==", text)
+        .get()
+        .then(snapshot => {
+          snapshot.docs.map(doc => {
+            this.setState({
+              allTransactions: [...this.state.allTransactions, doc.data()],
+              lastVisibleTransaction: doc
+            });
           });
         });
-      });
+    } else if (enteredText[0] === "S") {
+      db.collection("transactions")
+        .where("student_id", "==", text)
+        .get()
+        .then(snapshot => {
+          snapshot.docs.map(doc => {
+            this.setState({
+              allTransactions: [...this.state.allTransactions, doc.data()],
+              lastVisibleTransaction: doc
+            });
+          });
+        });
+    }
   };
