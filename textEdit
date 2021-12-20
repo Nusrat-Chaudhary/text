@@ -1,276 +1,294 @@
-import React, { Component } from "react";
+import React,{Component} from 'react';
 import {
   View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
   Text,
-  FlatList
-} from "react-native";
-import { Avatar, ListItem, Icon } from "react-native-elements";
-import db from "../config";
+  TextInput,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Alert} from 'react-native';
+import db from '../config';
+import firebase from 'firebase';
+import MyHeader from '../components/MyHeader'
 
-export default class SearchScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      allTransactions: [],
-      lastVisibleTransaction: null,
-      searchText: ""
-    };
+export default class BookRequestScreen extends Component{
+  constructor(){
+    super();
+    this.state ={
+      userId : firebase.auth().currentUser.email,
+      bookName:"",
+      reasonToRequest:"",
+      IsBookRequestActive : "",
+      requestedBookName: "",
+      bookStatus:"",
+      requestId:"",
+      userDocId: '',
+      docId :''
+    }
   }
-  componentDidMount = async () => {
-    this.getTransactions();
-  };
 
-  getTransactions = () => {
-    db.collection("transactions")
-      .limit(10)
-      .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          this.setState({
-            allTransactions: [...this.state.allTransactions, doc.data()],
-            lastVisibleTransaction: doc
-          });
-        });
-      });
-  };
+  createUniqueId(){
+    return Math.random().toString(36).substring(7);
+  }
 
-  handleSearch = async text => {
-    var enteredText = text.toUpperCase().split("");
-    text = text.toUpperCase();
+
+
+  addRequest = async (bookName,reasonToRequest)=>{
+    var userId = this.state.userId
+    var randomRequestId = this.createUniqueId()
+    db.collection('requested_books').add({
+        "user_id": userId,
+        "book_name":bookName,
+        "reason_to_request":reasonToRequest,
+        "request_id"  : randomRequestId,
+        "book_status" : "requested",
+         "date"       : firebase.firestore.FieldValue.serverTimestamp()
+
+    })
+
+    await  this.getBookRequest()
+    db.collection('users').where("email_id","==",userId).get()
+    .then()
+    .then((snapshot)=>{
+      snapshot.forEach((doc)=>{
+        db.collection('users').doc(doc.id).update({
+      IsBookRequestActive: true
+      })
+    })
+  })
+
     this.setState({
-      allTransactions: []
-    });
-    if (!text) {
-      this.getTransactions();
-    }
+        bookName :'',
+        reasonToRequest : '',
+        requestId: randomRequestId
+    })
 
-    if (enteredText[0] === "B") {
-      db.collection("transactions")
-        .where("book_id", "==", text)
-        .get()
-        .then(snapshot => {
-          snapshot.docs.map(doc => {
-            this.setState({
-              allTransactions: [...this.state.allTransactions, doc.data()],
-              lastVisibleTransaction: doc
-            });
-          });
-        });
-    } else if (enteredText[0] === "S") {
-      db.collection("transactions")
-        .where("student_id", "==", text)
-        .get()
-        .then(snapshot => {
-          snapshot.docs.map(doc => {
-            this.setState({
-              allTransactions: [...this.state.allTransactions, doc.data()],
-              lastVisibleTransaction: doc
-            });
-          });
-        });
-    }
-  };
+    return Alert.alert("Book Requested Successfully")
 
-  fetchMoreTransactions = async text => {
-    var enteredText = text.toUpperCase().split("");
-    text = text.toUpperCase();
 
-    const { lastVisibleTransaction, allTransactions } = this.state;
-    if (enteredText[0] === "B") {
-      const query = await db
-        .collection("transactions")
-        .where("bookId", "==", text)
-        .startAfter(lastVisibleTransaction)
-        .limit(10)
-        .get();
-      query.docs.map(doc => {
-        this.setState({
-          allTransactions: [...this.state.allTransactions, doc.data()],
-          lastVisibleTransaction: doc
-        });
-      });
-    } else if (enteredText[0] === "S") {
-      const query = await db
-        .collection("transactions")
-        .where("bookId", "==", text)
-        .startAfter(this.state.lastVisibleTransaction)
-        .limit(10)
-        .get();
-      query.docs.map(doc => {
-        this.setState({
-          allTransactions: [...this.state.allTransactions, doc.data()],
-          lastVisibleTransaction: doc
-        });
-      });
-    }
-  };
-
-  renderItem = ({ item, i }) => {
-    var date = item.date
-      .toDate()
-      .toString()
-      .split(" ")
-      .splice(0, 4)
-      .join(" ");
-
-    var transactionType =
-      item.transaction_type === "issue" ? "issued" : "returned";
-    return (
-      <View style={{ borderWidth: 1 }}>
-        <ListItem key={i} bottomDivider>
-          <Icon type={"antdesign"} name={"book"} size={40} />
-          <ListItem.Content>
-            <ListItem.Title style={styles.title}>
-              {`${item.book_name} ( ${item.book_id} )`}
-            </ListItem.Title>
-            <ListItem.Subtitle style={styles.subtitle}>
-              {`This book ${transactionType} by ${item.student_name}`}
-            </ListItem.Subtitle>
-            <View style={styles.lowerLeftContaiiner}>
-              <View style={styles.transactionContainer}>
-                <Text
-                  style={[
-                    styles.transactionText,
-                    {
-                      color:
-                        item.transaction_type === "issue"
-                          ? "#78D304"
-                          : "#0364F4"
-                    }
-                  ]}
-                >
-                  {item.transaction_type.charAt(0).toUpperCase() +
-                    item.transaction_type.slice(1)}
-                </Text>
-                <Icon
-                  type={"ionicon"}
-                  name={
-                    item.transaction_type === "issue"
-                      ? "checkmark-circle-outline"
-                      : "arrow-redo-circle-outline"
-                  }
-                  color={
-                    item.transaction_type === "issue" ? "#78D304" : "#0364F4"
-                  }
-                />
-              </View>
-              <Text style={styles.date}>{date}</Text>
-            </View>
-          </ListItem.Content>
-        </ListItem>
-      </View>
-    );
-  };
-
-  render() {
-    const { searchText, allTransactions } = this.state;
-    return (
-      <View style={styles.container}>
-        <View style={styles.upperContainer}>
-          <View style={styles.textinputContainer}>
-            <TextInput
-              style={styles.textinput}
-              onChangeText={text => this.setState({ searchText: text })}
-              placeholder={"Type here"}
-              placeholderTextColor={"#FFFFFF"}
-            />
-            <TouchableOpacity
-              style={styles.scanbutton}
-              onPress={() => this.handleSearch(searchText)}
-            >
-              <Text style={styles.scanbuttonText}>Search</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.lowerContainer}>
-          <FlatList
-            data={allTransactions}
-            renderItem={this.renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            onEndReached={() => this.fetchMoreTransactions(searchText)}
-            onEndReachedThreshold={0.7}
-          />
-        </View>
-      </View>
-    );
   }
+
+receivedBooks=(bookName)=>{
+  var userId = this.state.userId
+  var requestId = this.state.requestId
+  db.collection('received_books').add({
+      "user_id": userId,
+      "book_name":bookName,
+      "request_id"  : requestId,
+      "bookStatus"  : "received",
+
+  })
+}
+
+
+
+
+getIsBookRequestActive(){
+  db.collection('users')
+  .where('email_id','==',this.state.userId)
+  .onSnapshot(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      this.setState({
+        IsBookRequestActive:doc.data().IsBookRequestActive,
+        userDocId : doc.id
+      })
+    })
+  })
+}
+
+
+
+
+
+
+
+
+
+
+getBookRequest =()=>{
+  // getting the requested book
+var bookRequest=  db.collection('requested_books')
+  .where('user_id','==',this.state.userId)
+  .get()
+  .then((snapshot)=>{
+    snapshot.forEach((doc)=>{
+      if(doc.data().book_status !== "received"){
+        this.setState({
+          requestId : doc.data().request_id,
+          requestedBookName: doc.data().book_name,
+          bookStatus:doc.data().book_status,
+          docId     : doc.id
+        })
+      }
+    })
+})}
+
+
+
+sendNotification=()=>{
+  //to get the first name and last name
+  db.collection('users').where('email_id','==',this.state.userId).get()
+  .then((snapshot)=>{
+    snapshot.forEach((doc)=>{
+      var name = doc.data().first_name
+      var lastName = doc.data().last_name
+
+      // to get the donor id and book nam
+      db.collection('all_notifications').where('request_id','==',this.state.requestId).get()
+      .then((snapshot)=>{
+        snapshot.forEach((doc) => {
+          var donorId  = doc.data().donor_id
+          var bookName =  doc.data().book_name
+
+          //targert user id is the donor id to send notification to the user
+          db.collection('all_notifications').add({
+            "targeted_user_id" : donorId,
+            "message" : name +" " + lastName + " received the book " + bookName ,
+            "notification_status" : "unread",
+            "book_name" : bookName
+          })
+        })
+      })
+    })
+  })
+}
+
+componentDidMount(){
+  this.getBookRequest()
+  this.getIsBookRequestActive()
+
+}
+
+updateBookRequestStatus=()=>{
+  //updating the book status after receiving the book
+  db.collection('requested_books').doc(this.state.docId)
+  .update({
+    book_status : 'recieved'
+  })
+
+  //getting the  doc id to update the users doc
+  db.collection('users').where('email_id','==',this.state.userId).get()
+  .then((snapshot)=>{
+    snapshot.forEach((doc) => {
+      //updating the doc
+      db.collection('users').doc(doc.id).update({
+        IsBookRequestActive: false
+      })
+    })
+  })
+
+
+}
+
+
+  render(){
+
+    if(this.state.IsBookRequestActive === true){
+      return(
+
+        // Status screen
+
+        <View style = {{flex:1,justifyContent:'center'}}>
+          <View style={{borderColor:"orange",borderWidth:2,justifyContent:'center',alignItems:'center',padding:10,margin:10}}>
+          <Text>Book Name</Text>
+          <Text>{this.state.requestedBookName}</Text>
+          </View>
+          <View style={{borderColor:"orange",borderWidth:2,justifyContent:'center',alignItems:'center',padding:10,margin:10}}>
+          <Text> Book Status </Text>
+
+          <Text>{this.state.bookStatus}</Text>
+          </View>
+
+          <TouchableOpacity style={{borderWidth:1,borderColor:'orange',backgroundColor:"orange",width:300,alignSelf:'center',alignItems:'center',height:30,marginTop:30}}
+          onPress={()=>{
+            this.sendNotification()
+            this.updateBookRequestStatus();
+            this.receivedBooks(this.state.requestedBookName)
+          }}>
+          <Text>I recieved the book </Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    else
+    {
+    return(
+      // Form screen
+        <View style={{flex:1}}>
+          <MyHeader title="Request Book" navigation ={this.props.navigation}/>
+
+          <ScrollView>
+            <KeyboardAvoidingView style={styles.keyBoardStyle}>
+              <TextInput
+                style ={styles.formTextInput}
+                placeholder={"enter book name"}
+                onChangeText={(text)=>{
+                    this.setState({
+                        bookName:text
+                    })
+                }}
+                value={this.state.bookName}
+              />
+              <TextInput
+                style ={[styles.formTextInput,{height:300}]}
+                multiline
+                numberOfLines ={8}
+                placeholder={"Why do you need the book"}
+                onChangeText ={(text)=>{
+                    this.setState({
+                        reasonToRequest:text
+                    })
+                }}
+                value ={this.state.reasonToRequest}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={()=>{ this.addRequest(this.state.bookName,this.state.reasonToRequest);
+                }}
+                >
+                <Text>Request</Text>
+              </TouchableOpacity>
+
+            </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
+    )
+  }
+}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#5653D4"
+  keyBoardStyle : {
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center'
   },
-  upperContainer: {
-    flex: 0.2,
-    justifyContent: "center",
-    alignItems: "center"
+  formTextInput:{
+    width:"75%",
+    height:35,
+    alignSelf:'center',
+    borderColor:'#ffab91',
+    borderRadius:10,
+    borderWidth:1,
+    marginTop:20,
+    padding:10,
   },
-  textinputContainer: {
-    borderWidth: 2,
-    borderRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#9DFD24",
-    borderColor: "#FFFFFF"
-  },
-  textinput: {
-    width: "57%",
-    height: 50,
-    padding: 10,
-    borderColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 3,
-    fontSize: 18,
-    backgroundColor: "#5653D4",
-    fontFamily: "Rajdhani_600SemiBold",
-    color: "#FFFFFF"
-  },
-  scanbutton: {
-    width: 100,
-    height: 50,
-    backgroundColor: "#9DFD24",
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  scanbuttonText: {
-    fontSize: 24,
-    color: "#0A0101",
-    fontFamily: "Rajdhani_600SemiBold"
-  },
-  lowerContainer: {
-    flex: 0.8,
-    backgroundColor: "#FFFFFF"
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: "Rajdhani_600SemiBold"
-  },
-  subtitle: {
-    fontSize: 16,
-    fontFamily: "Rajdhani_600SemiBold"
-  },
-  lowerLeftContaiiner: {
-    alignSelf: "flex-end",
-    marginTop: -40
-  },
-  transactionContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center"
-  },
-  transactionText: {
-    fontSize: 20,
-
-    fontFamily: "Rajdhani_600SemiBold"
-  },
-  date: {
-    fontSize: 12,
-    fontFamily: "Rajdhani_600SemiBold",
-    paddingTop: 5
+  button:{
+    width:"75%",
+    height:50,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:10,
+    backgroundColor:"#ff5722",
+    shadowColor: "#000",
+    shadowOffset: {
+       width: 0,
+       height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+    marginTop:20
+    },
   }
-});
