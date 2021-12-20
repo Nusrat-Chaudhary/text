@@ -1,4 +1,9 @@
 
+componentDidMount = async () => {
+    this.getTransactions();
+  };
+
+
 handleSearch = async text => {
     var enteredText = text.toUpperCase().split("");
     text = text.toUpperCase();
