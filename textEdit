@@ -1,4 +1,4 @@
-fetchMoreTransactions = async text => {
+ fetchMoreTransactions = async text => {
     var enteredText = text.toUpperCase().split("");
     text = text.toUpperCase();
 
