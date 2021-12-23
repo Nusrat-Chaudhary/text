@@ -1,4 +1,11 @@
-   onPress={() => {
-            this.setState({ chunks: db[this.state.text].chunks });
-          }}>
-          
+     <View>
+          {this.state.chunks.map(item => {
+            return (
+              <TouchableOpacity
+              style={styles.chunkButton}
+              >
+              <Text style={styles.displayText}>{item}</Text>
+              </TouchableOpacity>
+              );
+          })}
+        </View>
