@@ -1,80 +1,57 @@
-import * as React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import { Header } from 'react-native-elements';
-
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      text: '',
-      displayText: '',
-    };
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Header
-          backgroundColor={'#9c8210'}
-          centerComponent={{
-            text: 'Monkey Chunky',
-            style: { color: '#fff', fontSize: 20 },
-          }}
-        />
-
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={text => {
-            this.setState({ text: text });
-          }}
-          value={this.state.text}
-        />
-        <TouchableOpacity
-          style={styles.goButton}
-          onPress={() => {
-            this.setState({ displayText: this.state.text });
-          }}>
-          <Text style={styles.buttonText}>GO</Text>
-        </TouchableOpacity>
-        <Text style={styles.displayText}>{this.state.displayText}</Text>
-      </View>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b8b8b8',
+    backgroundColor: "#FFFFFF"
   },
-  inputBox: {
-    marginTop: 200,
-    width: '80%',
-    alignSelf: 'center',
-    height: 40,
-    textAlign: 'center',
-    borderWidth: 4,
-    outline: 'none',
+  bgImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
   },
-  goButton: {
-    width: '50%',
+
+  upperContainer: {
+    flex: 0.5,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  appIcon: {
+    width: 280,
+    height: 280,
+    resizeMode: "contain",
+    marginTop: 80
+  },
+  appName: {
+    width: 130,
+    height: 130,
+    resizeMode: "contain"
+  },
+  lowerContainer: {
+    flex: 0.5,
+    alignItems: "center"
+  },
+  textinput: {
+    width: "75%",
     height: 55,
-    alignSelf: 'center',
     padding: 10,
-    margin: 10,
+    borderColor: "#FFFFFF",
+    borderWidth: 4,
+    borderRadius: 10,
+    fontSize: 18,
+    color: "#FFFFFF",
+    fontFamily: "Rajdhani_600SemiBold",
+    backgroundColor: "#5653D4"
+  },
+  button: {
+    width: "43%",
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F48D20",
+    borderRadius: 15
   },
   buttonText: {
-    textAlign: 'center',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  displayText: {
-    textAlign: 'center',
-    fontSize: 30,
-  },
+    fontSize: 24,
+    color: "#FFFFFF",
+    fontFamily: "Rajdhani_600SemiBold"
+  }
 });
