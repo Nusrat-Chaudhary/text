@@ -1,8 +1,4 @@
-
-        <Image
-          style={styles.imageIcon}
-          source={{
-            uri:
-              'https://www.shareicon.net/data/128x128/2015/08/06/80805_face_512x512.png',
-          }}
-        />
+   onPress={() => {
+            this.setState({ chunks: db[this.state.text].chunks });
+          }}>
+          
