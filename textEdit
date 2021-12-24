@@ -1,14 +1,8 @@
-function collisionWithBoat(index) {
-  for (var i = 0; i < boats.length; i++) {
-    if (balls[index] !== undefined && boats[i] !== undefined) {
-      var collision = Matter.SAT.collides(balls[index].body, boats[i].body);
+  remove(index) {
+    Matter.Body.setVelocity(this.body, { x: 0, y: 0 });
 
-      if (collision.collided) {
-        boats[i].remove(i);
-
-        Matter.World.remove(world, balls[index].body);
-        delete balls[index];
-      }
-    }
+    setTimeout(() => {
+      Matter.World.remove(world, this.body);
+      delete balls[index];
+    }, 1000);
   }
-}
