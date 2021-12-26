@@ -1,3 +1,4 @@
-  engine = Engine.create();
-  world = engine.world;
-  
+ bottom =new Ground(200,390,400,20);
+  right = new Ground(390,200,20,400);
+  left = new Ground(10,200,20,400);
+  top= new Ground(200,10,400,20);
