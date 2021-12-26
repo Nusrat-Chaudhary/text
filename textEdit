@@ -1,4 +1,9 @@
-   let options = {
-      isStatic:true
-    };
-    
+  show() {
+    var pos = this.body.position;
+    push();
+    rectMode(CENTER);
+    stroke(255);
+    fill(127);
+    rect(pos.x, pos.y, this.w, this.h);
+    pop();
+  }
