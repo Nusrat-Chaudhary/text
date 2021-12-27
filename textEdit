@@ -1,103 +1,64 @@
-import * as React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { Header } from 'react-native-elements';
-import db from './localdb';
-import PhonicSoundButton from './components/PhonicSoundButton';
+import React, { Component } from 'react';
+import { Text, View, Alert } from 'react-native';
+import axios from "axios";
 
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      text: '',
-      chunks: [],
-      phonicSounds: [],
-    };
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Header
-          backgroundColor={'#9c8210'}
-          centerComponent={{
-            text: 'Monkey Chunky',
-            style: { color: '#fff', fontSize: 20 },
-          }}
-        />
+export default class MeteorScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            meteors: {},
+        };
+    }
 
-        <Image
-          style={styles.imageIcon}
-          source={{
-            uri:
-              'https://www.shareicon.net/data/128x128/2015/08/06/80805_face_512x512.png',
-          }}
-        />
+    componentDidMount() {
+        this.getMeteors()
+    }
 
-        <TextInput
-          style={styles.inputBox}
-          onChangeText={text => {
-            this.setState({ text: text });
-          }}
-          value={this.state.text}
-        />
-        <TouchableOpacity
-          style={styles.goButton}
-          onPress={() => {
-            this.setState({ chunks: db[this.state.text].chunks });
-            this.setState({ phonicSounds: db[this.state.text].phones });
-          }}>
-          <Text style={styles.buttonText}>GO</Text>
-        </TouchableOpacity>
-        <View>
-          {this.state.chunks.map((item, index) => {
+    getMeteors = () => {
+        axios
+            .get("https://api.nasa.gov/neo/rest/v1/feed?api_key=nAkq24DJ2dHxzqXyzfdreTvczCVOnwJuFLFq4bDZ")
+            .then(response => {
+                this.setState({ meteors: response.data.near_earth_objects })
+            })
+            .catch(error => {
+                Alert.alert(error.message)
+            })
+    }
+
+    render() {
+        if (Object.keys(this.state.meteors).length === 0) {
             return (
-              <PhonicSoundButton
-                wordChunk={this.state.chunks[index]}
-                soundChunk={this.state.phonicSounds[index]}
-              />
-            );
-          })}
-        </View>
-      </View>
-    );
-  }
-}
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                    <Text>Loading</Text>
+                </View>
+            )
+        } else {
+            let meteor_arr = Object.keys(this.state.meteors).map(meteor_date => {
+                return this.state.meteors[meteor_date]
+            })
+            let meteors = [].concat.apply([], meteor_arr);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#b8b8b8',
-  },
-  inputBox: {
-    marginTop: 50,
-    width: '80%',
-    alignSelf: 'center',
-    height: 40,
-    textAlign: 'center',
-    borderWidth: 4,
-    outline: 'none',
-  },
-  goButton: {
-    width: '50%',
-    height: 55,
-    alignSelf: 'center',
-    padding: 10,
-    margin: 10,
-  },
-  buttonText: {
-    textAlign: 'center',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  imageIcon: {
-    width: 150,
-    height: 150,
-    marginLeft: 95,
-  }
-});
+            meteors.forEach(function (element) {
+                let diameter = (element.estimated_diameter.kilometers.estimated_diameter_min + element.estimated_diameter.kilometers.estimated_diameter_max) / 2
+                let threatScore = (diameter / element.close_approach_data[0].miss_distance.kilometers) * 1000000000
+                element.threat_score = threatScore;
+            });
+
+            return (
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                    <Text>Meteor Screen!</Text>
+                </View>
+            )
+        }
+    }
+}
