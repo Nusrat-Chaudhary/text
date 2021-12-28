@@ -1,12 +1,19 @@
-    "@react-navigation/native": "^5.9.1",
-    "@react-navigation/stack": "^5.14.0",
-    "expo": "~40.0.0",
-    "expo-status-bar": "~1.0.3",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native-gesture-handler": "~1.8.0",
-    "react-native-reanimated": "~1.13.0",
-    "react-native-web": "~0.13.12",
-    "react-native-screens": "~2.15.0",
-    "react-native-safe-area-context": "3.1.9",
-    "@react-native-community/masked-view": "0.1.10"
+lines (16 sloc)  428 Bytes
+   
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+
+export default class HomeScreen extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                <Text>Home Screen!</Text>
+            </View>
+        )
+    }
+}
