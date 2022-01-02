@@ -1,326 +1,152 @@
-import React, { Component } from "react";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  ImageBackground,
-  Image,
-  Alert,
-  ToastAndroid,
-  KeyboardAvoidingView
-} from "react-native";
-import * as Permissions from "expo-permissions";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import db from "../config";
-import firebase from "firebase";
+//Global variables for images
+var bg, sunR, sunL, s_pan, fan_anim,fan_img,display, g_house_img;
 
-const bgImage = require("../assets/background2.png");
-const appIcon = require("../assets/appIcon.png");
-const appName = require("../assets/appName.png");
+//Global variables for Sprites
+var g_house, pan1,pan2,fan,fan2;
 
-export default class TransactionScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      bookId: "",
-      studentId: "",
-      domState: "normal",
-      hasCameraPermissions: null,
-      scanned: false,
-      bookName: "",
-      studentName: ""
-    };
-  }
+//Creating a ray group
+var rayGroup;
 
-  getCameraPermissions = async domState => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+//Creating temprature and voltage variables
+var temp = 10
+var panel1_voltage =0;
+var panel2_voltage = 0;
+var power_gen = 0;
 
-    this.setState({
-      /*status === "granted" is true when user has granted permission
-          status === "granted" is false when user has not granted the permission
-        */
-      hasCameraPermissions: status === "granted",
-      domState: domState,
-      scanned: false
-    });
-  };
+var absorbed1= 0;
+var absorbed2= 0;
 
-  handleBarCodeScanned = async ({ type, data }) => {
-    const { domState } = this.state;
 
-    if (domState === "bookId") {
-      this.setState({
-        bookId: data,
-        domState: "normal",
-        scanned: true
-      });
-    } else if (domState === "studentId") {
-      this.setState({
-        studentId: data,
-        domState: "normal",
-        scanned: true
-      });
-    }
-  };
 
-  handleTransaction = async () => {
-    var { bookId, studentId } = this.state;
-    await this.getBookDetails(bookId);
-    await this.getStudentDetails(studentId);
+function preload()
+{
+  sunR = loadImage("sunrays.png");
+  sunL = loadImage("sunrays1.png");
+  bg = loadImage("bgimage.png")
+  s_pan = loadImage("s_panel.png");
+  fan_anim = loadAnimation("fan01.png","fan02.png","fan03.png","fan04.png","fan05.png");
+  fan_img = loadImage("fan01.png");
+  display = loadImage("disp.png");
 
-    db.collection("books")
-      .doc(bookId)
-      .get()
-      .then(doc => {
-        var book = doc.data();
-        if (book.is_book_available) {
-          var { bookName, studentName } = this.state;
-          this.initiateBookIssue(bookId, studentId, bookName, studentName);
-
-          // For Android users only
-          ToastAndroid.show("Book issued to the student!", ToastAndroid.SHORT);
-
-          // Alert.alert("Book issued to the student!");
-        } else {
-          var { bookName, studentName } = this.state;
-          this.initiateBookReturn(bookId, studentId, bookName, studentName);
-
-          // For Android users only
-          ToastAndroid.show(
-            "Book returned to the library!",
-            ToastAndroid.SHORT
-          );
-
-          // Alert.alert("Book returned to the library!");
-        }
-      });
-  };
-
-  getBookDetails = bookId => {
-    bookId = bookId.trim();
-    db.collection("books")
-      .where("book_id", "==", bookId)
-      .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          this.setState({
-            bookName: doc.data().book_details.book_name
-          });
-        });
-      });
-  };
-
-  getStudentDetails = studentId => {
-    studentId = studentId.trim();
-    db.collection("students")
-      .where("student_id", "==", studentId)
-      .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          this.setState({
-            studentName: doc.data().student_details.student_name
-          });
-        });
-      });
-  };
-
-  initiateBookIssue = async (bookId, studentId, bookName, studentName) => {
-    //add a transaction
-    db.collection("transactions").add({
-      student_id: studentId,
-      student_name: studentName,
-      book_id: bookId,
-      book_name: bookName,
-      date: firebase.firestore.Timestamp.now().toDate(),
-      transaction_type: "issue"
-    });
-    //change book status
-    db.collection("books")
-      .doc(bookId)
-      .update({
-        is_book_available: false
-      });
-    //change number  of issued books for student
-    db.collection("students")
-      .doc(studentId)
-      .update({
-        number_of_books_issued: firebase.firestore.FieldValue.increment(1)
-      });
-
-    // Updating local state
-    this.setState({
-      bookId: "",
-      studentId: ""
-    });
-  };
-
-  initiateBookReturn = async (bookId, studentId, bookName, studentName) => {
-    //add a transaction
-    db.collection("transactions").add({
-      student_id: studentId,
-      student_name: studentName,
-      book_id: bookId,
-      book_name: bookName,
-      date: firebase.firestore.Timestamp.now().toDate(),
-      transaction_type: "return"
-    });
-    //change book status
-    db.collection("books")
-      .doc(bookId)
-      .update({
-        is_book_available: true
-      });
-    //change number  of issued books for student
-    db.collection("students")
-      .doc(studentId)
-      .update({
-        number_of_books_issued: firebase.firestore.FieldValue.increment(-1)
-      });
-
-    // Updating local state
-    this.setState({
-      bookId: "",
-      studentId: ""
-    });
-  };
-
-  render() {
-    const { bookId, studentId, domState, scanned } = this.state;
-    if (domState !== "normal") {
-      return (
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
-      );
-    }
-    return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <ImageBackground source={bgImage} style={styles.bgImage}>
-          <View style={styles.upperContainer}>
-            <Image source={appIcon} style={styles.appIcon} />
-            <Image source={appName} style={styles.appName} />
-          </View>
-          <View style={styles.lowerContainer}>
-            <View style={styles.textinputContainer}>
-              <TextInput
-                style={styles.textinput}
-                placeholder={"Book Id"}
-                placeholderTextColor={"#FFFFFF"}
-                value={bookId}
-                onChangeText={text => this.setState({ bookId: text })}
-              />
-              <TouchableOpacity
-                style={styles.scanbutton}
-                onPress={() => this.getCameraPermissions("bookId")}
-              >
-                <Text style={styles.scanbuttonText}>Scan</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.textinputContainer, { marginTop: 25 }]}>
-              <TextInput
-                style={styles.textinput}
-                placeholder={"Student Id"}
-                placeholderTextColor={"#FFFFFF"}
-                value={studentId}
-                onChangeText={text => this.setState({ studentId: text })}
-              />
-              <TouchableOpacity
-                style={styles.scanbutton}
-                onPress={() => this.getCameraPermissions("studentId")}
-              >
-                <Text style={styles.scanbuttonText}>Scan</Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              style={[styles.button, { marginTop: 25 }]}
-              onPress={this.handleTransaction}
-            >
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </KeyboardAvoidingView>
-    );
-  }
+  g_house_img = loadImage("greenhouse.png")
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-  bgImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
-  },
-  upperContainer: {
-    flex: 0.5,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  appIcon: {
-    width: 200,
-    height: 200,
-    resizeMode: "contain",
-    marginTop: 80
-  },
-  appName: {
-    width: 80,
-    height: 80,
-    resizeMode: "contain"
-  },
-  lowerContainer: {
-    flex: 0.5,
-    alignItems: "center"
-  },
-  textinputContainer: {
-    borderWidth: 2,
-    borderRadius: 10,
-    flexDirection: "row",
-    backgroundColor: "#9DFD24",
-    borderColor: "#FFFFFF"
-  },
-  textinput: {
-    width: "57%",
-    height: 50,
-    padding: 10,
-    borderColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 3,
-    fontSize: 18,
-    backgroundColor: "#5653D4",
-    fontFamily: "Rajdhani_600SemiBold",
-    color: "#FFFFFF"
-  },
-  scanbutton: {
-    width: 100,
-    height: 50,
-    backgroundColor: "#9DFD24",
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  scanbuttonText: {
-    fontSize: 24,
-    color: "#0A0101",
-    fontFamily: "Rajdhani_600SemiBold"
-  },
-  button: {
-    width: "43%",
-    height: 55,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F48D20",
-    borderRadius: 15
-  },
-  buttonText: {
-    fontSize: 24,
-    color: "#FFFFFF",
-    fontFamily: "Rajdhani_600SemiBold"
+function setup() 
+{
+  createCanvas(800, 500);
+  
+  raysGroup = createGroup();
+  panelGroup = createGroup();
+
+  g_house = createSprite(380,300,100,100);
+  g_house.addImage(g_house_img);
+  g_house.scale = 1;
+  //g_house.debug = true;
+  g_house.setCollider("circle",-10,0,185)
+
+  pan1 = createSprite(80,height-50,80,80);
+  pan1.addImage(s_pan);
+  pan1.scale = 0.75;
+
+  pan2 = createSprite(width-130,height-50,80,80);
+  pan2.addImage(s_pan);
+  pan2.scale = 0.75;
+
+
+  fan = createSprite(280,300,20,20);
+  fan.addImage(fan_img);
+  fan.scale = 0.3;
+  fan.addAnimation('run',fan_anim);
+
+  fan2 = createSprite(450,300,20,20);
+  fan2.addImage(fan_img);
+  fan2.scale = 0.3;
+  fan2.addAnimation('run',fan_anim);
+  textSize(15);
+  
+}
+
+function draw() 
+{
+  background(220);
+  image(bg,0,0,width,height);
+  image(display,600,10,200,60)
+  power_gen = panel1_voltage + panel2_voltage;
+
+  push();
+  noStroke();
+  fill(255,255,0)
+  text("Voltage : ",620,37)
+  text(power_gen,680,37)
+
+  text("Temprature : ",620,56)
+  text(temp,710,56);
+  pop();
+  //TA
+  makeRay();
+
+  //calculate wattege
+  
+    panel1_voltage = round(absorbed1* 0.15);
+  
+    panel2_voltage = round(absorbed2* 0.15);
+  
+
+  if(power_gen>=8 && temp>=30)
+  {
+    fan.changeAnimation('run');
+    temp-=1;
+    panel2_voltage-=1
   }
-});
+
+  if(power_gen>=4 && temp>=30 )
+  {
+    fan2.changeAnimation('run');
+    temp-= 0.5;
+    panel1_voltage-=1
+  }
+
+  drawSprites();
+    
+}
+
+function makeRay()
+{
+  
+  if (frameCount % 60 === 0) 
+   {
+    var x = Math.round(random(10,350));
+    rayL = createSprite(x,50,10,10);
+    var xr = Math.round(random(350,750));
+    rayR = createSprite(xr,50,10,10);
+    rayL.addImage(sunL);
+    rayR.addImage(sunR);
+    rayL.scale = 0.08;
+    rayR.scale = 0.08;
+    vx = random(-1,1);
+    raysGroup.add(rayL);
+    raysGroup.add(rayR);
+    raysGroup.setVelocityYEach(2)
+    raysGroup.setVelocityXEach(vx)
+    raysGroup.setLifetimeEach(134)
+   }
+  raysGroup.overlap(pan1,charge1);
+  raysGroup.overlap(pan2,charge2);
+  raysGroup.overlap(g_house,temp_rise)
+}
+
+function charge1(sprA)
+{
+   sprA.remove()
+   absorbed1+=1;
+}
+function charge2(sprA)
+{
+   sprA.remove()
+   absorbed2+=1;
+}
+function temp_rise(sprb)
+{
+  sprb.remove();
+  temp+=1;
+}
