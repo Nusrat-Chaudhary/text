@@ -1,22 +1,39 @@
-checkStudentEligibilityForBookReturn = async (bookId, studentId) => {
-    const transactionRef = await db
-      .collection("transactions")
-      .where("book_id", "==", bookId)
-      .limit(1)
-      .get();
-    var isStudentEligible = "";
-    transactionRef.docs.map(doc => {
-      var lastBookTransaction = doc.data();
-      if (lastBookTransaction.student_id === studentId) {
-        isStudentEligible = true;
-      } else {
-        isStudentEligible = false;
-        Alert.alert("The book wasn't issued by this student!");
-        this.setState({
-          bookId: "",
-          studentId: ""
-        });
+ handleTransaction = async () => {
+    var { bookId, studentId } = this.state;
+    await this.getBookDetails(bookId);
+    await this.getStudentDetails(studentId);
+
+    var transactionType = await this.checkBookAvailability(bookId);
+
+    if (!transactionType) {
+      this.setState({ bookId: "", studentId: "" });
+      // For Android users only
+      // ToastAndroid.show("The book doesn't exist in the library database!", ToastAndroid.SHORT);
+      Alert.alert("The book doesn't exist in the library database!");
+    } else if (transactionType === "issue") {
+      var isEligible = await this.checkStudentEligibilityForBookIssue(
+        studentId
+      );
+
+      if (isEligible) {
+        var { bookName, studentName } = this.state;
+        this.initiateBookIssue(bookId, studentId, bookName, studentName);
       }
-    });
-    return isStudentEligible;
+      // For Android users only
+      // ToastAndroid.show("Book issued to the student!", ToastAndroid.SHORT);
+      Alert.alert("Book issued to the student!");
+    } else {
+      var isEligible = await this.checkStudentEligibilityForBookReturn(
+        bookId,
+        studentId
+      );
+
+      if (isEligible) {
+        var { bookName, studentName } = this.state;
+        this.initiateBookReturn(bookId, studentId, bookName, studentName);
+      }
+      // For Android users only
+      // ToastAndroid.show("Book returned to the library!", ToastAndroid.SHORT);
+      Alert.alert("Book returned to the library!");
+    }
   };
