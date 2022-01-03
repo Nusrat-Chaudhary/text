@@ -1,32 +1,22 @@
-
-  checkStudentEligibilityForBookIssue = async studentId => {
-    const studentRef = await db
-      .collection("students")
-      .where("student_id", "==", studentId)
+checkStudentEligibilityForBookReturn = async (bookId, studentId) => {
+    const transactionRef = await db
+      .collection("transactions")
+      .where("book_id", "==", bookId)
+      .limit(1)
       .get();
-
     var isStudentEligible = "";
-    if (studentRef.docs.length == 0) {
-      this.setState({
-        bookId: "",
-        studentId: ""
-      });
-      isStudentEligible = false;
-      Alert.alert("The student id doesn't exist in the database!");
-    } else {
-      studentRef.docs.map(doc => {
-        if (doc.data().number_of_books_issued < 2) {
-          isStudentEligible = true;
-        } else {
-          isStudentEligible = false;
-          Alert.alert("The student has already issued 2 books!");
-          this.setState({
-            bookId: "",
-            studentId: ""
-          });
-        }
-      });
-    }
-
+    transactionRef.docs.map(doc => {
+      var lastBookTransaction = doc.data();
+      if (lastBookTransaction.student_id === studentId) {
+        isStudentEligible = true;
+      } else {
+        isStudentEligible = false;
+        Alert.alert("The book wasn't issued by this student!");
+        this.setState({
+          bookId: "",
+          studentId: ""
+        });
+      }
+    });
     return isStudentEligible;
   };
