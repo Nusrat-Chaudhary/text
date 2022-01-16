@@ -1,6 +1,9 @@
 
-function keyReleased() {
-  if (keyCode === DOWN_ARROW) {
-    cannonBall.shoot();
-  }
-}
+    console.log(this.angle)
+    if (keyIsDown(RIGHT_ARROW) && this.angle<70  ) {
+      this.angle += 1;
+    }
+
+    if (keyIsDown(LEFT_ARROW) && this.angle>-30 ) {
+      this.angle -= 1;
+    }
