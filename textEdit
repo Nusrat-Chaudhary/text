@@ -1,36 +1,19 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feed from "../screens/Feed";
-import CreateStory from "../screens/CreateStory";
-
-const Tab = createBottomTabNavigator();
-
-const BottomTabNavigator = () => {
-    return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
-                    if (route.name === 'Feed') {
-                        iconName = focused
-                            ? 'book'
-                            : 'book-outline';
-                    } else if (route.name === 'CreateStory') {
-                        iconName = focused ? 'create' : 'create-outline';
-                    }
-                    return <Ionicons name={iconName} size={size} color={color} />;
-                },
-            })}
-            tabBarOptions={{
-                activeTintColor: 'tomato',
-                inactiveTintColor: 'gray',
-            }}
-        >
-            <Tab.Screen name="Feed" component={Feed} />
-            <Tab.Screen name="CreateStory" component={CreateStory} />
-        </Tab.Navigator>
-    );
-}
-
-export default BottomTabNavigator
+  constructor(x, y) 
+  {
+    var options = {
+      isStatic: true
+    };
+    this.r = 30;
+    this.body = Bodies.circle(x, y, this.r, options);
+    this.image = loadImage("./assets/cannonball.png");
+    World.add(world, this.body);
+  }
+  
+  display() 
+  {
+    var pos = this.body.position;
+    push();
+    imageMode(CENTER);
+    image(this.image, pos.x, pos.y, this.r, this.r);
+    pop();
+  }
