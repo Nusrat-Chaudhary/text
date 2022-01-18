@@ -1,33 +1,14 @@
-export default class HomeScreen extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <SafeAreaView style={styles.droidSafeArea} />
-                <ImageBackground source={} style={styles.backgroundImage}>
-                    <View style={styles.titleBar}>
-                        <Text style={styles.titleText}>ISS Tracker App</Text>
-                    </View>
-
-                    <TouchableOpacity style={styles.routeCard} onPress={() =>
-                        this.props.navigation.navigate("IssLocation")
-                    }>
-                        <Text style={styles.routeText}>ISS Location</Text>
-                        <Text style={styles.knowMore}>{"Know More --->"}</Text>
-                        <Text style={styles.bgDigit}>1</Text>
-                        <Image source={} style={styles.iconImage}></Image>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.routeCard} onPress={() =>
-                        this.props.navigation.navigate("Meteors")
-                    }>
-                        <Text style={styles.routeText}>Meteors</Text>
-                        <Text style={styles.knowMore}>{"Know More --->"}</Text>
-                        <Text style={styles.bgDigit}>2</Text>
-                        <Image source={} style={styles.iconImage}></Image>
-                    </TouchableOpacity>
-
-                </ImageBackground>
-            </View>
-        )
-    }
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Wecome" screenOptions={{
+        headerShown: false
+      }}>
+        <Stack.Screen name="" component={WelcomeScreen} />
+       
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
+
+export default App;
