@@ -1,5 +1,4 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feed from "../screens/Feed";
-import CreateStory from "../screens/CreateStory";
+import React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import TabNavigator from "./TabNavigator";
+import Profile from "../screens/Profile";
