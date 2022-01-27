@@ -1,9 +1,5 @@
-    <View style={styles.container}>
-                    <SafeAreaView style={styles.droidSafeArea} />
-                    <FlatList
-                        keyExtractor={this.keyExtractor}
-                        data={meteors}
-                        renderItem={this.renderItem}
-                        horizontal={true}
-                    />
-                </View >
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feed from "../screens/Feed";
+import CreateStory from "../screens/CreateStory";
