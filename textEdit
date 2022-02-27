@@ -1,6 +1,8 @@
-  remove(index) {
-    setTimeout(() => {
-      Matter.World.remove(world, boats[index].body);
-      delete boats[index];
-    }, 2000);
+function showCannonBalls(ball, index) {
+  if (ball) {
+    ball.display();
+    if (ball.body.position.x >= width || ball.body.position.y >= height - 50) {
+      ball.remove(index);
+    }
   }
+}
