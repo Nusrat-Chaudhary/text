@@ -1,8 +1,8 @@
-function showCannonBalls(ball, index) {
-  if (ball) {
-    ball.display();
-    if (ball.body.position.x >= width || ball.body.position.y >= height - 50) {
-      ball.remove(index);
-    }
+  remove(index) {
+    Matter.Body.setVelocity(this.body, { x: 0, y: 0 });
+
+    setTimeout(() => {
+      Matter.World.remove(world, this.body);
+      delete balls[index];
+    }, 1000);
   }
-}
