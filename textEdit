@@ -1,17 +1,33 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import Feed from "../screens/Feed";
+import CreateStory from "../screens/CreateStory";
 
-export default class CreateStory extends Component {
-    render() {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center"
-                }}>
-                <Text>Create Story</Text>
-            </View>
-        )
-    }
+const Tab = createBottomTabNavigator();
+
+const BottomTabNavigator = () => {
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    if (route.name === 'Feed') {
+                        iconName = focused
+                            ? 'book'
+                            : 'book-outline';
+                    } else if (route.name === 'CreateStory') {
+                        iconName = focused ? 'create' : 'create-outline';
+                    }
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+            }}
+        >
+            <Tab.Screen name="Feed" component={Feed} />
+            <Tab.Screen name="CreateStory" component={CreateStory} />
+        </Tab.Navigator>
+    );
 }
+
+export default BottomTabNavigator
