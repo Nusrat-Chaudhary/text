@@ -1,3 +1,6 @@
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feed from "../screens/Feed";
 import CreateStory from "../screens/CreateStory";
 
@@ -31,3 +34,9 @@ const BottomTabNavigator = () => {
 }
 
 export default BottomTabNavigator
+© 2022 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
