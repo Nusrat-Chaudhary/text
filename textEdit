@@ -1,8 +1,6 @@
-for repetition_var_1 in sequence:
-  for repetition_var_2 in sequence:
-    statement 1
-    statement 2
-    .....
-    .....
-    .....
-    statement 10
+num = int(input("Enter the number of rows: "))
+
+for i in range(0, num):   
+        for j in range(0, i + 1):              
+            print(j, end=" ")
+        print()
