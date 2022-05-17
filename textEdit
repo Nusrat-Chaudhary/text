@@ -1,22 +1,8 @@
-
-  if (keyIsDown(RIGHT_ARROW)) 
-  {
-    box.position.x = box.position.x +5;
-  }
-
-    if (keyIsDown(LEFT_ARROW)) 
-  {
-    box.position.x= box.position.x -5;
-    
-  }
- 
-    if (keyIsDown(UP_ARROW)) 
-  {
-    box.position.y = box.position.y - 5;
-   
-  }
-
-  if (keyIsDown(DOWN_ARROW)) 
-  {
-    box.position.y = box.position.y + 5;
-  }
+for repetition_var_1 in sequence:
+  for repetition_var_2 in sequence:
+    statement 1
+    statement 2
+    .....
+    .....
+    .....
+    statement 10
