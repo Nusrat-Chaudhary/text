@@ -1,29 +1,20 @@
-class Car(object):
-  """
-    blueprint for car
-  """
-
-  def __init__(self, model, color, company, speed_limit):
-    self.color = color
-    self.company = company
-    self.speed_limit = speed_limit
-    self.model = model
-
-  def start(self):
-    print("started")
-
-  def stop(self):
-    print("stopped")
-
-  def accelarate(self):
-    print("accelarating...")
-    "accelarator functionality here"
-
-  def change_gear(self, gear_type):
-    print("gear changed")
-    " gear related functionality here"
+var marks = [35,38,42,45,43,34,46,41,48,32];
 
 
-audi = Car("A6", "red", "audi", 80)
+function setup() {
+  createCanvas(400,400);
+ 
+  for(var i = 0; i<marks.length; i++)
+  { 
+    if(marks[i]>= 45)
+    {
+      console.log(marks[i])
+    }
+  }
 
-print(audi.change_gear(1))
+}
+
+function draw() 
+{
+  background(30);
+}
