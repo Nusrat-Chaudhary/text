@@ -1,13 +1,26 @@
-function spawnClouds() {
-  //write code here to spawn the clouds
-  if (frameCount % 60 === 0) {
-    cloud = createSprite(600,100,40,10);
-    cloud.addImage(cloudImage)
-    cloud.y = Math.round(random(10,60))
-    cloud.scale = 0.4;
-    cloud.velocityX = -3;
-    
-    //adjust the depth
-    cloud.depth = trex.depth
-    trex.depth = trex.depth + 1;
-    }
+import dropbox
+
+class TransferData:
+    def __init__(self, access_token):
+        self.access_token = access_token
+
+    def upload_file(self, file_from, file_to):
+        """upload a file to Dropbox using API v2
+        """
+        dbx = dropbox.Dropbox(self.access_token)
+
+        with open(file_from, 'rb') as f:
+            dbx.files_upload(f.read(), file_to)
+
+def main():
+    access_token ='sl.BJqKJ_ihJqxYbuLu0W-YzMzjDicUtPSnlTjQCvWBtkPsuG-TOHWH3vOA9vfXckRqg3CyIlbM5c6CcQWRjydKq9Lm-lhSYYTNQQM9dLzb-PiZ1BrXAlwjxoLfhzRLMStqfN2dFzitrEec'
+    transferData = TransferData(access_token)
+
+    file_from = 'test.txt'
+    file_to = '/test_dropbox/test.txt'  # The full path to upload the file to, including the file name
+
+    # API v2
+    transferData.upload_file(file_from, file_to)
+
+if __name__ == '__main__':
+    main()
