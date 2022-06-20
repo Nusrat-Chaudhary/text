@@ -1,11 +1,17 @@
-   if(collide(fruit,star,20)==true)
-   {
-     star.visible = false;
-     star_display.changeAnimation('one');
-   }
+var input, heading;
 
-   if(collide(fruit,star2,40)==true)
-   {
-     star2.visible= false;
-     star_display.changeAnimation('two');
-   }
+function setup() {
+  
+  createCanvas(300, 200);
+  background(178,255,102);
+  
+  input = createInput();
+  input.position(5, 60);
+
+  heading = createElement('h4', 'Enter any alphabet:');
+  heading.position(5, 20);
+    
+  textAlign(CENTER);
+  textSize(50);
+}
+
