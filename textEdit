@@ -1,9 +1,23 @@
-import pandas as pd
+def calculate(option):
+  if(option=="1" or option == "2"):
+    num1=float(input("enter 1st num:"))
+    num2=float(input("enter 2nd num:"))
 
-import plotly.express as px
+    if option == "1":
+      print("Sum",num1,"+", num2, "=" , add(num1,num2))
 
-df = pd.read_csv("line_chart.csv")
+    elif option == "2":
+      print("difference",num1,"-", num2, "=" , subtract(num1,num2))
 
-fig = px.line(df, x="Year", y="Per capita income", color="Country", title='Per Capita Income')
+  else:
+    print("invalid input!")
+    
+    
+    
+print ("choose operation from below:")
+print("1.ADD")
+print("2.SUBTRACT")
 
-fig.show()
+option=input("enter option number(1/2):")
+
+calculate(option)
