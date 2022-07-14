@@ -1,9 +1,13 @@
-n = len(new_data)
-total = 0
+#using floor division to get the nearest number whole number
+# floor division is shown by //
+if n % 2 == 0:
+    #getting the first number
+	median1 = float(new_data[n//2])
+    #getting the second number
+	median2 = float(new_data[n//2 - 1])
+    #getting mean of those numbers
+	median = (median1 + median2)/2
+else:
+	median = new_data[n//2]
 
-for x in new_data:
-  total += x
-
-mean = total/n
-
-print("Mean / Average is: " + str(mean))
+print("Median is: " + str(median))
