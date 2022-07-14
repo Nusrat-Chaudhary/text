@@ -1,7 +1,9 @@
-file_data.pop(0)
+n = len(new_data)
+total = 0
 
-new_data = []
+for x in new_data:
+  total += x
 
-for i in range(len(file_data)):
-  n_num = file_data[i][1]
-  new_data.append(float(n_num))
+mean = total/n
+
+print("Mean / Average is: " + str(mean))
