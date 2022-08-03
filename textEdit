@@ -1,29 +1,22 @@
-import plotly.express as px
 import csv
 import numpy as np
 
-def plotFigure(data_path):
-    with open(data_path) as csv_file:
-        df = csv.DictReader(csv_file)
-        fig = px.scatter(df,x="Temperature", y="Ice-cream Sales( ₹ )")
-        fig.show()
 
 def getDataSource(data_path):
-    ice_cream_sales = []
-    cold_drink_sales = []
+    size_of_tv = []
+    Average_time_spent = []
     with open(data_path) as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
-            ice_cream_sales.append(float(row["Temperature"]))
-            cold_drink_sales.append(float(row["Ice-cream Sales( ₹ )"]))
+            size_of_tv.append(float(row["Size of TV"]))
+            Average_time_spent.append(float(row["\tAverage time spent watching TV in a week (hours)"]))
 
-    return {"x" : ice_cream_sales, "y": cold_drink_sales}
+    return {"x" : size_of_tv, "y": Average_time_spent}
 
 def findCorrelation(datasource):
     correlation = np.corrcoef(datasource["x"], datasource["y"])
-    print("Correlation between Temperature vs Ice Cream Sales :-  \n--->",correlation[0,1])
+    print("Correlation between Size of Tv and Average time spent watching Tv in a week :-  \n--->",correlation[0,1])
 
-data_path  = "Ice-Cream vs Cold-Drink vs Temperature - Ice Cream Sale vs Temperature data.csv"
+data_path  = "Size of TV, Average time spent watching TV in a week (hours).csv"
 datasource = getDataSource(data_path)
 findCorrelation(datasource)
-plotFigure(data_path)
