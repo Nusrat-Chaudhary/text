@@ -1,19 +1,27 @@
-class ClassName:
+# Define Class
+class Contact_Details:
 
-    def __init__(self, attribute1, attribute2):
-      statement(s)
+    def __init__(self, name, mobile_number, email, address):
+        self.contact_name = name
+        self.contact_number = mobile_number
+        self.email = email
+        self.contact_address = address
 
-    def method_1():
-      statement(s)
+        # Make a dictionary of the contact details 
+        self.person = {
+            "name": self.contact_name,
+            "mobile" : self.contact_number,
+            "email": self.email,
+            "address": self.contact_address
+        } 
 
-    .......
-    .......
-    .......
+    # Define the Methods of the class
+    
+    # View All Contact Details
+    def view_contact_details(self, contact_list):
+      print(contact_list)
+      
 
-    def method_10(parameter1, parameter2):
-      statement(s)
-
-    .......
-
-    def method(parameter(s)):
-      statement(s)
+    # Add the contact details to the list    
+    def add_contact_details(self, contact_list):
+      contact_list.append(self.person)
