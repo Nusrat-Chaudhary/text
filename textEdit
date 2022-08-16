@@ -1,4 +1,33 @@
-for i in range(num, 0, -1):   
-        for j in range(1, i+1):              
-            print(j, end=" ")
-        print()  
+name = "Darsh"
+type(name)
+
+
+
+
+info = [ ]
+type(info)
+
+
+
+
+person = {
+    
+}
+
+
+
+type(person)
+
+
+
+
+person = {
+    "name": "Darsh",
+    "mobile" : 9029190909,
+    "email": "dummy1email@gmail.com",
+    "address": "Sweet Home, Lane, City"
+}
+
+
+
+print(person["name"])
