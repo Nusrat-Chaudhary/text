@@ -25,3 +25,30 @@ class Contact_Details:
     # Add the contact details to the list    
     def add_contact_details(self, contact_list):
       contact_list.append(self.person)
+
+
+
+
+
+
+
+
+phonebook_list=[]
+new_contact = Contact_Details('Preeti',8956478556,'preeti_dummy1@gmail.com', 'Delhi , India')
+
+#Add the Contact Details to the Phonebook List
+new_contact.add_contact_details(phonebook_list)
+
+#View Contact Details After Adding to the Phonebook List
+new_contact.view_contact_details(phonebook_list)
+
+#Adding Second Person's Contact Details in the Phonebook List
+# Create the object with new values
+new_contact = Contact_Details('Shean',8956476333,'shean_dummy1@gmail.com', 'California , USA')
+
+# Add details
+new_contact.add_contact_details(phonebook_list)
+
+# View details
+new_contact.view_contact_details(phonebook_list)
+
