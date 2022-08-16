@@ -1,33 +1,19 @@
-name = "Darsh"
-type(name)
+class ClassName:
 
+    def __init__(self, attribute1, attribute2):
+      statement(s)
 
+    def method_1():
+      statement(s)
 
+    .......
+    .......
+    .......
 
-info = [ ]
-type(info)
+    def method_10(parameter1, parameter2):
+      statement(s)
 
+    .......
 
-
-
-person = {
-    
-}
-
-
-
-type(person)
-
-
-
-
-person = {
-    "name": "Darsh",
-    "mobile" : 9029190909,
-    "email": "dummy1email@gmail.com",
-    "address": "Sweet Home, Lane, City"
-}
-
-
-
-print(person["name"])
+    def method(parameter(s)):
+      statement(s)
