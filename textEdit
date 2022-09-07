@@ -1,22 +1,13 @@
-var Student = {
-  name: "Sammy",
-  class: 7,
-  roll_no:21,
-  favorite_subject: "coding",
-  marks : [30,35,40,50]
-  
-};
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
+import statistics
+import random
+import pandas as pd
+import csv
 
-function setup() {
-  
-  createCanvas(400, 400);
-  //changing the roll no
-  console.log(Student.roll_no);
-  Student.roll_no = 45;
-  console.log(Student.roll_no);  
-}
+df = pd.read_csv("data.csv")
+data = df["temp"].tolist()
 
-function draw() {
-  background(220);
-  
-}
+code to show the plot of raw data
+fig = ff.create_distplot([data], ["temp"], show_hist=False)
+fig.show()
