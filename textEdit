@@ -1,10 +1,10 @@
 function check(num1) {
-  if(num1%2==0 && num1>60)
+  if(num1%2==0 || num1<30)
     console.log("true");
   else
     console.log("false");
 }
 
 check(32);
-check(62);
+check(15);
 check(65);
