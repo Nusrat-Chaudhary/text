@@ -1,48 +1,21 @@
-var trex, trex_running, trex_collided;
-var ground, invisibleGround, groundImage;
+var marks = [30,40,45,35];
 
-function preload(){
-  trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
-  trex_collided = loadImage("trex_collided.png");
-  groundImage = loadImage("ground2.png")
+function marks_average()
+{
+  var sum = 0; 
+    for(var i = 0; i<marks.length; i= i+1)
+      {
+        sum = sum + marks[i];
+      }
+  var average_marks =sum/marks.length;
+  console.log(average_marks);
 }
 
 function setup() {
-  createCanvas(600, 200);
-  
-  //create a trex sprite
-  trex = createSprite(50,180,20,50);
-  trex.addAnimation("running", trex_running);
-  
-  //adding scale and position to trex
-  trex.scale = 0.5;
-  trex.x = 50
-  
-  //create ground sprite
-  ground = createSprite(200,180,400,20);
-  ground.addImage("ground",groundImage);
-  ground.x = ground.width /2;
+  createCanvas(400, 400);
+  marks_average();
 }
 
 function draw() {
-  background(220);
-  
-  ground.velocityX = -2
-  console.log(ground.x)
-  
-  if (ground.x<0){
-    ground.x = ground.width/2;
-  }
-  
-  //jumping the trex on space key press
-  if(keyDown("space")) {
-    trex.velocityY = -10;
-  }
-  
-  trex.velocityY = trex.velocityY + 0.8
-  
- 
- //stop trex from falling down 
-  trex.collide(ground);
-  drawSprites();
+  background(150);
 }
