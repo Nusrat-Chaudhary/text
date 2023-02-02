@@ -1,1 +1,38 @@
-sa
+var ball, ballImage;
+var edges;
+
+function preload(){
+    ballImage=loadImage("ball.png")
+    
+}
+
+function setup() {
+  createCanvas(680, 680);
+  ball= createSprite(340,340,40,40);
+  ball.shapeColor = "red";
+  ball.addImage("ball",ballImage);
+  ball.scale=0.1;
+
+  ball.velocityX=5;   
+  ball.velocityY=-5;
+ 
+  
+ edges=createEdgeSprites();    
+  
+}
+
+function draw() {
+  //Fill the canvas with light pink color, covering up previous images
+  background("pink");
+  
+//bounces of right side
+  ball.bounceOff(edges[1]);
+  //bounces off left
+  ball.bounceOff(edges[0]);
+    //bounces off bottom
+  ball.bounceOff(edges[3]);
+  //bounces off top
+  ball.bounceOff(edges[2]);
+  
+  drawSprites()
+}
