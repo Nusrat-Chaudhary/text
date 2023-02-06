@@ -1,18 +1,21 @@
+var ball;
+var vx = 2;
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(400,400);
+
+  ball = createSprite(100,100,100,100);
 }
 
-function draw() {
-  background(220);
-}
-
-function count()
+function draw() 
 {
-  let numbers = [1,2,3,4,5,6,7,8,9];
-  let len = numbers.length;
-
-  for(let i = 1; i<len; i++)
+  background(51);
+  if(ball.position.x<=0 || ball.position.x>=width)
   {
-    console.log(numbers[i]);
+    vx= -vx;
   }
+  ball.velocity.x = vx;
+
+  drawSprites();
+
 }
