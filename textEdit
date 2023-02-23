@@ -1,8 +1,12 @@
-function createAlienRow() {
-    
+//class27
+function createAlienRow(y, alienImage) {
+    var x =125
   for(var c=0; c<6; c++)
   {
-    var alien = createSprite(20,20,50, 25);
-   console.log(c)
+    var alien = createSprite(x,y,50, 25);
+     x+= alien.width + 40;
+    alien.addImage("coloralien",alienImage);
+    alien.scale=0.07;
+    alienGroup.add(alien);
   }
 }
